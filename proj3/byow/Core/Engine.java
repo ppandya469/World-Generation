@@ -3,6 +3,8 @@ package byow.Core;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 
+import java.util.Random;
+
 public class Engine {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
@@ -14,6 +16,9 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
+        // Take input & call interactWithInputString
+
+        interactWithInputString();
     }
 
     /**
@@ -45,6 +50,10 @@ public class Engine {
         //
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
+
+        // make a new random with seed input
+        // make some kind of object that gives the final TETile[][] array
+        Random r = new Random(input.hashCode());
 
         TETile[][] finalWorldFrame = null;
         return finalWorldFrame;
