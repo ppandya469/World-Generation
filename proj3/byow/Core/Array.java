@@ -2,7 +2,7 @@ package byow.Core;
 
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
-import edu.princeton.cs.algs4.Graph;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 import java.util.Random;
 import java.util.TreeMap;
@@ -11,13 +11,14 @@ public class Array {
 
     private int WIDTH;
     private int HEIGHT;
-    private static final int MINROOM = 2;
-    private static final int MAXROOM = 10;
+    private static final int MINROOM = 5;
+    private static final int MAXROOM = 15;
+    private static final int ROOMSMIN = 6;
+    private static final int ROOMSMAX = 12;
     public TETile[][] grid;
     private Random r = new Random();
-    private Graph g;
+    private WeightedQuickUnionUF uf;
     private TreeMap<Integer, Room> gMap;
-
     private class Room {
 
         private int w;
@@ -44,6 +45,7 @@ public class Array {
         }
 
     }
+
     public Array(int w, int h) {
         WIDTH = w;
         HEIGHT = h;
@@ -54,14 +56,17 @@ public class Array {
             }
         }
 
-        int rooms = r.nextInt(4, 9);
-        g = new Graph(rooms);
+        int rooms = r.nextInt(ROOMSMIN, ROOMSMAX);
+        uf = new WeightedQuickUnionUF(rooms);
         gMap = new TreeMap<>();
         for (int i = 0; i < rooms; i++) {
             Room rm = generateRoom();
             gMap.put(i, rm);
             rm.drawRoom(grid);
         }
+
+        generateHallways();
+
     }
 
     private Room generateRoom() {
@@ -73,7 +78,56 @@ public class Array {
     }
 
     private void generateHallways() {
+        for (int i = 0; i < gMap.size(); i++) {
+            int a = i;
+            while (a == i) {
+                a = r.nextInt(gMap.size());
+            }
+            drawHallway(i, a);
+        }
+    }
 
+    private void drawHallway(int ind1, int ind2) {
+        Room r1 = gMap.get(ind1);
+        Room r2 = gMap.get(ind2);
+
+        Room hX;
+        Room hY;
+        if (r2.y > r1.y && r2.y < (r2.y + r2.h)) {
+            hY = new Room(3, r1.y - (r2.y + r2.h), r.nextInt(r2.y, r2.y + r2.h), r2.y + r2.h);
+            hY.drawRoom(grid);
+            return;
+        } else if (r1.x > r2.x) {
+            if (r1.x < (r2.x + r2.w)) {
+                hX = new Room(r2.x - (r1.x + r1.w), 3, r1.x + r1.w, r.nextInt(r1.y, r1.y + r1.h));
+                hX.drawRoom(grid);
+                return;
+            }
+            int width = r.nextInt(r2.x, r2.x + r2.w);
+            if (r1.x + r1.w + width > WIDTH) {
+                width = WIDTH;
+            }
+            hX = new Room(width, 3, r1.x + r1.w, r.nextInt(r1.y, r1.y + r1.h));
+            hX.drawRoom(grid);
+        } else {
+            int width = r.nextInt(r2.x, r2.x + r2.w);
+            if (r1.x < width) {
+                width = r1.x;
+            }
+            hX = new Room(width, 3, r1.x - width, r.nextInt(r1.y, r1.y + r1.h));
+            hX.drawRoom(grid);
+        }
+        if (r2.y > r1.y) {
+            hY = new Room(3, r1.y - (r2.y + r2.h), hX.x - 3, r2.y + r2.h);
+            hY.drawRoom(grid);
+        } else {
+            int height = r.nextInt(r1.y, r1.y + r1.h);
+            if (r2.y - height < 0) {
+                height = r2.y;
+            }
+            hY = new Room(3, r1.y - (r2.y + r2.h), hX.x + 3, r2.y - height);
+            hY.drawRoom(grid);
+        }
     }
 
     public TETile[][] handleCommand(char c){
