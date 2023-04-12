@@ -15,6 +15,7 @@ public class Array {
     private static final int MAXROOM = 15;
     private static final int ROOMSMIN = 6;
     private static final int ROOMSMAX = 12;
+    private static final int HALLSIZE = 2;
     public TETile[][] grid;
     private Random r = new Random();
     private WeightedQuickUnionUF uf;
@@ -25,7 +26,7 @@ public class Array {
         private int h;
         private int x;
         private int y;
-        public Room(int width, int height, int xCoord, int yCoord) {
+        private Room(int width, int height, int xCoord, int yCoord) {
             w = width;
             h = height;
             x = xCoord;
@@ -64,9 +65,7 @@ public class Array {
             gMap.put(i, rm);
             rm.drawRoom(grid);
         }
-
         generateHallways();
-
     }
 
     private Room generateRoom() {
@@ -83,6 +82,7 @@ public class Array {
             while (a == i) {
                 a = r.nextInt(gMap.size());
             }
+            uf.union(i, a);
             drawHallway(i, a);
         }
     }
@@ -91,43 +91,51 @@ public class Array {
         Room r1 = gMap.get(ind1);
         Room r2 = gMap.get(ind2);
 
-        Room hX;
-        Room hY;
-        if (r2.y > r1.y && r2.y < (r2.y + r2.h)) {
-            hY = new Room(3, r1.y - (r2.y + r2.h), r.nextInt(r2.y, r2.y + r2.h), r2.y + r2.h);
-            hY.drawRoom(grid);
+        if (r1.x + r1.w > r2.x && r1.x + r1.w < r2.x + r2.w) {
+            Room hv = hVertic(r1, r2.y + 1);
+            hv.drawRoom(grid);
             return;
-        } else if (r1.x > r2.x) {
-            if (r1.x < (r2.x + r2.w)) {
-                hX = new Room(r2.x - (r1.x + r1.w), 3, r1.x + r1.w, r.nextInt(r1.y, r1.y + r1.h));
-                hX.drawRoom(grid);
-                return;
-            }
-            int width = r.nextInt(r2.x, r2.x + r2.w);
-            if (r1.x + r1.w + width > WIDTH) {
-                width = WIDTH;
-            }
-            hX = new Room(width, 3, r1.x + r1.w, r.nextInt(r1.y, r1.y + r1.h));
-            hX.drawRoom(grid);
-        } else {
-            int width = r.nextInt(r2.x, r2.x + r2.w);
-            if (r1.x < width) {
-                width = r1.x;
-            }
-            hX = new Room(width, 3, r1.x - width, r.nextInt(r1.y, r1.y + r1.h));
-            hX.drawRoom(grid);
         }
-        if (r2.y > r1.y) {
-            hY = new Room(3, r1.y - (r2.y + r2.h), hX.x - 3, r2.y + r2.h);
-            hY.drawRoom(grid);
-        } else {
-            int height = r.nextInt(r1.y, r1.y + r1.h);
-            if (r2.y - height < 0) {
-                height = r2.y;
-            }
-            hY = new Room(3, r1.y - (r2.y + r2.h), hX.x + 3, r2.y - height);
-            hY.drawRoom(grid);
+        if (r1.y + r1.h > r2.y && r1.y + r1.h < r2.y + r2.h) {
+            Room hh = hHoriz(r1, r2.x + 1);
+            hh.drawRoom(grid);
+            return;
         }
+
+        int x = r.nextInt(r1.x, r1.x + r1.w);
+        int y = r.nextInt(r2.y, r2.y + r2.h);
+        Room hv = hVertic(r2, x);
+        Room hh = hHoriz(r1, y);
+        hh.drawRoom(grid);
+        hv.drawRoom(grid);
+    }
+
+    private Room hHoriz(Room origin, int x) {
+        if (x >= WIDTH) {
+            x = WIDTH - 1;
+        }
+        if (x < 0) {
+            x = 0;
+        }
+
+        if (x < origin.x) {
+            return new Room(origin.x + 1 - x, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
+        }
+        return new Room(x - (origin.x + origin.w), HALLSIZE, origin.x + origin.w - 1, r.nextInt(origin.y, origin.y + origin.h));
+    }
+
+    private Room hVertic(Room origin, int y) {
+        if (y >= HEIGHT) {
+            y = HEIGHT - 1;
+        }
+        if (y < 0) {
+            y = 0;
+        }
+        
+        if (y < origin.y) {
+            return new Room(HALLSIZE, origin.y + 1 - y, r.nextInt(origin.x, origin.x + origin.w), y);
+        }
+        return new Room(HALLSIZE, y - (origin.y + origin.h) + 1, r.nextInt(origin.x, origin.x + origin.w), origin.y + origin.h - 1);
     }
 
     public TETile[][] handleCommand(char c){
