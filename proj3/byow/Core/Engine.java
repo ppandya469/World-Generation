@@ -2,6 +2,7 @@ package byow.Core;
 
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.Random;
 
@@ -16,9 +17,7 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
-        // Take input & call interactWithInputString
-
-        interactWithInputString();
+        interactWithInputString("");
     }
 
     /**
@@ -50,12 +49,18 @@ public class Engine {
         //
         // See proj3.byow.InputDemo for a demo of how you can make a nice clean interface
         // that works for many different input types.
+        char[] c = input.toCharArray();
+        Array a = new Array(WIDTH, HEIGHT);
+        for (int i = 0; i < c.length; i++) {
+            a.handleCommand(c[i]);
+        }
+        return a.grid;
+    }
 
-        // make a new random with seed input
-        // make some kind of object that gives the final TETile[][] array
-        Random r = new Random(input.hashCode());
-
-        TETile[][] finalWorldFrame = null;
-        return finalWorldFrame;
+    public static void main(String[] args) {
+        Engine e = new Engine();
+        TETile[][] t = e.interactWithInputString("");
+        e.ter.initialize(t.length, t[0].length);
+        e.ter.renderFrame(t);
     }
 }
