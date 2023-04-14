@@ -81,18 +81,15 @@ public class Array {
         for (int i = 0; i < roomList.size() - 1; i++) {
             drawHallway(roomList.get(i), roomList.get(i + 1));
         }
+        drawHallway(roomList.get(0), roomList.get(roomList.size() - 1));
     }
 
     private String drawHallway(Room r1, Room r2) {
         if (r1.x > r2.x && r1.x < r2.x + r2.w) {
-            Room hv = hVertic(r1, r2.y + HALLSIZE);
-            hv.drawRoom(grid);
-            return "vertical " + Integer.toString(hv.y);
+            return "vertical";
         }
         if (r1.y > r2.y && r1.y < r2.y + r2.h) {
-            Room hh = hHoriz(r1, r2.x + HALLSIZE);
-            hh.drawRoom(grid);
-            return "horizontal " + Integer.toString(hh.x);
+            return "horizontal";
         }
         Room hh = hHoriz(r1, r.nextInt(r2.x, r2.x + r2.w - HALLSIZE));
         Room hv = hVertic(r2, hh.y);
