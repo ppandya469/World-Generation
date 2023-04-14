@@ -13,7 +13,7 @@ public class Array {
     private int WIDTH;
     private int HEIGHT;
     private static final int MINROOM = 5;
-    private static final int MAXROOM = 15;
+    private static final int MAXROOM = 10;
     private static final int ROOMSMIN = 6;
     private static final int ROOMSMAX = 12;
     private static final int HALLSIZE = 2;
@@ -53,9 +53,11 @@ public class Array {
         grid = new TETile[WIDTH][HEIGHT];
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b < HEIGHT; b++) {
-                grid[a][b] = Tileset.NOTHING;
+                grid[a][b] = Tileset.SAND;
             }
         }
+
+        grid[0][0] = Tileset.AVATAR;
 
         int rooms = r.nextInt(ROOMSMIN, ROOMSMAX);
         roomList = new ArrayList<>();
@@ -76,30 +78,24 @@ public class Array {
     }
 
     private void generateHallways() {
-        for (int i = 0; i < roomList.size() - 1; i++) {
+        /*for (int i = 0; i < roomList.size() - 1; i++) {
             drawHallway(roomList.get(i), roomList.get(i + 1));
-        }
-        drawHallway(roomList.get(0), roomList.get(roomList.size() - 1));
+        }*/
+        System.out.println(drawHallway(roomList.get(0), roomList.get(roomList.size() - 1)));
     }
 
-    private void drawHallway(Room r1, Room r2) {
-        if (r1.x + r1.w > r2.x && r1.x + r1.w < r2.x + r2.w) {
+    private String drawHallway(Room r1, Room r2) {
+        if (r1.x > r2.x && r1.x < r2.x + r2.w) {
             Room hv = hVertic(r1, r2.y + HALLSIZE);
             hv.drawRoom(grid);
-            return;
+            return "vertical " + Integer.toString(hv.y);
         }
-        if (r1.y + r1.h > r2.y && r1.y + r1.h < r2.y + r2.h) {
+        if (r1.y > r2.y && r1.y < r2.y + r2.h) {
             Room hh = hHoriz(r1, r2.x + HALLSIZE);
             hh.drawRoom(grid);
-            return;
+            return "horizontal " + Integer.toString(hh.x);
         }
-
-        int x = r.nextInt(r1.x, r1.x + r1.w);
-        int y = r.nextInt(r2.y, r2.y + r2.h);
-        Room hv = hVertic(r2, x);
-        Room hh = hHoriz(r1, y);
-        hh.drawRoom(grid);
-        hv.drawRoom(grid);
+        return "weird sitch";
     }
 
     private Room hHoriz(Room origin, int x) {
@@ -110,10 +106,10 @@ public class Array {
             x = 0;
         }
 
-        if (x < origin.x) {
-            return new Room(origin.x + HALLSIZE - x, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
+        if (x > origin.x) {
+            return new Room(x - origin.x + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
-        return new Room(x - (origin.x + origin.w) + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
+        return new Room(origin.x - x, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
     }
 
     private Room hVertic(Room origin, int y) {
