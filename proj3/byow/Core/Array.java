@@ -111,7 +111,7 @@ public class Array {
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
+            return new Room(x - origin.x - origin.w + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
         }
         return new Room(origin.x - x + HALLSIZE, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
     }
@@ -125,9 +125,9 @@ public class Array {
         }
 
         if (y < origin.y) {
-            return new Room(HALLSIZE, origin.y + HALLSIZE - y, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), y);
+            return new Room(HALLSIZE, origin.y - y + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), y);
         }
-        return new Room(HALLSIZE, y - (origin.y + origin.h) + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h - HALLSIZE);
+        return new Room(HALLSIZE, y - origin.y - origin.h + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h + HALLSIZE);
     }
 
     public TETile[][] handleCommand(char c){
