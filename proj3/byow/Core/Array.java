@@ -39,7 +39,7 @@ public class Array {
         private void drawRoom(TETile[][] target) {
             for (int a = x; a <= (x + w); a++) {
                 for (int b = y; b <= (y + h); b++) {
-                    if (a == WIDTH) {
+                    if (a >= WIDTH) {
                         break;
                     }
                     if ((a == x || a == (x + w) || b == y || b == (y + h)) && target[a][b] != Tileset.FLOOR) {
@@ -57,6 +57,10 @@ public class Array {
         WIDTH = w;
         HEIGHT = h;
         grid = new TETile[WIDTH][HEIGHT];
+        fillArray();
+    }
+
+    private void fillArray() {
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b < HEIGHT; b++) {
                 grid[a][b] = Tileset.SAND;
@@ -136,6 +140,7 @@ public class Array {
         if (c == 'S') {
             gettingSeed = false;
             r = new Random(seed.hashCode());
+            fillArray();
         }
         return grid;
     }

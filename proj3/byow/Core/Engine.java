@@ -2,9 +2,6 @@ package byow.Core;
 
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
-import org.checkerframework.checker.units.qual.A;
-
-import java.util.Random;
 
 public class Engine {
     TERenderer ter = new TERenderer();
@@ -42,7 +39,6 @@ public class Engine {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] interactWithInputString(String input) {
-        // TODO: Fill out this method so that it run the engine using the input
         // passed in as an argument, and return a 2D tile representation of the
         // world that would have been drawn if the same inputs had been given
         // to interactWithKeyboard().
@@ -54,12 +50,13 @@ public class Engine {
         for (int i = 0; i < c.length; i++) {
             a.handleCommand(c[i]);
         }
+        System.out.println(input);
         return a.grid;
     }
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        TETile[][] t = e.interactWithInputString("");
+        TETile[][] t = e.interactWithInputString("N5197880843569031643S");
         e.ter.initialize(t.length, t[0].length);
         e.ter.renderFrame(t);
     }
