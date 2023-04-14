@@ -4,6 +4,7 @@ import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
@@ -12,14 +13,16 @@ public class Array {
 
     private int WIDTH;
     private int HEIGHT;
-    private static final int MINROOM = 5;
-    private static final int MAXROOM = 10;
+    private static final int MINROOM = 7;
+    private static final int MAXROOM = 12;
     private static final int ROOMSMIN = 6;
     private static final int ROOMSMAX = 12;
     private static final int HALLSIZE = 2;
     public TETile[][] grid;
     private Random r = new Random();
     private ArrayList<Room> roomList;
+    private boolean gettingSeed = false;
+    private String seed;
     private class Room {
 
         private int w;
@@ -36,6 +39,9 @@ public class Array {
         private void drawRoom(TETile[][] target) {
             for (int a = x; a <= (x + w); a++) {
                 for (int b = y; b <= (y + h); b++) {
+                    if (a == WIDTH) {
+                        break;
+                    }
                     if ((a == x || a == (x + w) || b == y || b == (y + h)) && target[a][b] != Tileset.FLOOR) {
                         target[a][b] = Tileset.WALL;
                     } else {
@@ -85,12 +91,6 @@ public class Array {
     }
 
     private String drawHallway(Room r1, Room r2) {
-        if (r1.x > r2.x && r1.x < r2.x + r2.w) {
-            return "vertical";
-        }
-        if (r1.y > r2.y && r1.y < r2.y + r2.h) {
-            return "horizontal";
-        }
         Room hh = hHoriz(r1, r.nextInt(r2.x, r2.x + r2.w - HALLSIZE));
         Room hv = hVertic(r2, hh.y);
         hh.drawRoom(grid);
@@ -127,6 +127,16 @@ public class Array {
     }
 
     public TETile[][] handleCommand(char c){
+        if (gettingSeed) {
+            seed = seed + Character.toString(c);
+        }
+        if (c == 'N') {
+            gettingSeed = true;
+        }
+        if (c == 'S') {
+            gettingSeed = false;
+            r = new Random(seed.hashCode());
+        }
         return grid;
     }
 
