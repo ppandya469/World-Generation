@@ -1,6 +1,6 @@
 # Build Your Own World Design Document
 
-**Partner 1: Pari Pandya** //hi random changes
+**Partner 1: Pari Pandya**
 
 **Partner 2: Jorge Salazar**
 
