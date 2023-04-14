@@ -39,7 +39,7 @@ public class Array {
         private void drawRoom(TETile[][] target) {
             for (int a = x; a <= (x + w); a++) {
                 for (int b = y; b <= (y + h); b++) {
-                    if (a >= WIDTH) {
+                    if (a >= WIDTH || b >= HEIGHT) {
                         break;
                     }
                     if ((a == x || a == (x + w) || b == y || b == (y + h)) && target[a][b] != Tileset.FLOOR) {
@@ -134,10 +134,10 @@ public class Array {
         if (gettingSeed) {
             seed = seed + Character.toString(c);
         }
-        if (c == 'N') {
+        if (c == 'N' || c == 'n') {
             gettingSeed = true;
         }
-        if (c == 'S') {
+        if (c == 'S' || c == 's') {
             gettingSeed = false;
             r = new Random(seed.hashCode());
             fillArray();
