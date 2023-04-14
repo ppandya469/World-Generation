@@ -95,7 +95,11 @@ public class Array {
             hh.drawRoom(grid);
             return "horizontal " + Integer.toString(hh.x);
         }
-        return "weird sitch";
+        Room hh = hHoriz(r1, r.nextInt(r2.x, r2.x + r2.w - HALLSIZE));
+        Room hv = hVertic(r2, hh.y);
+        hh.drawRoom(grid);
+        hv.drawRoom(grid);
+        return "horizontal " + Integer.toString(hh.x) + " vertical " + Integer.toString(hv.y);
     }
 
     private Room hHoriz(Room origin, int x) {
@@ -109,7 +113,7 @@ public class Array {
         if (x > origin.x) {
             return new Room(x - origin.x + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
-        return new Room(origin.x - x, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
+        return new Room(origin.x - x + HALLSIZE, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
     }
 
     private Room hVertic(Room origin, int y) {
