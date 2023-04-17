@@ -51,6 +51,14 @@ public class Array {
             }
         }
 
+        private int[] addPlayer(TETile[][] target) {
+            int[] coords = new int[2];
+            coords[0] = x + w / 2;
+            coords[1] = y + h /2;
+            target[coords[0]][coords[1]] = Tileset.AVATAR;
+            return coords;
+        }
+
     }
 
     public Array(int w, int h) {
@@ -63,11 +71,9 @@ public class Array {
     private void fillArray() {
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b < HEIGHT; b++) {
-                grid[a][b] = Tileset.SAND;
+                grid[a][b] = Tileset.NOTHING;
             }
         }
-
-        grid[0][0] = Tileset.AVATAR;
 
         int rooms = r.nextInt(ROOMSMIN, ROOMSMAX);
         roomList = new ArrayList<>();
@@ -77,6 +83,7 @@ public class Array {
             rm.drawRoom(grid);
         }
         generateHallways();
+        roomList.get(0).addPlayer(grid);
     }
 
     private Room generateRoom() {
