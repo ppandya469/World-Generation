@@ -56,7 +56,7 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        TETile[][] t = e.interactWithInputString("N34567S");
+        TETile[][] t = e.interactWithInputString("N92745015Sddddwaas");
         e.ter.initialize(t.length, t[0].length);
         e.ter.renderFrame(t);
     }

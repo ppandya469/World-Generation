@@ -22,7 +22,8 @@ public class Array {
     private Random r = new Random();
     private ArrayList<Room> roomList;
     private boolean gettingSeed = false;
-    private String seed;
+    private String seed = "";
+    private int[] playerCoords;
     private class Room {
 
         private int w;
@@ -83,7 +84,7 @@ public class Array {
             rm.drawRoom(grid);
         }
         generateHallways();
-        roomList.get(0).addPlayer(grid);
+        playerCoords = roomList.get(0).addPlayer(grid);
     }
 
     private Room generateRoom() {
@@ -138,18 +139,40 @@ public class Array {
     }
 
     public TETile[][] handleCommand(char c){
-        if (gettingSeed) {
-            seed = seed + Character.toString(c);
-        }
-        if (c == 'N' || c == 'n') {
-            gettingSeed = true;
-        }
-        if (c == 'S' || c == 's') {
+        if (c == 'S') {
             gettingSeed = false;
-            r = new Random(seed.hashCode());
+            r = new Random(Long.valueOf(seed));
             fillArray();
         }
+        if (gettingSeed) {
+            seed = seed + Character.toString(c);
+            return grid;
+        }
+        if (c == 'N') {
+            gettingSeed = true;
+        }
+        playerMove(c);
         return grid;
+    }
+
+    private void playerMove(char c) {
+        if (c == 'w' && grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.FLOOR)) {
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+            playerCoords[1]++;
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+        } else if (c == 'a' && grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.FLOOR)) {
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+            playerCoords[0]--;
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+        } else if (c == 's' && grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.FLOOR)) {
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+            playerCoords[1]--;
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+        } else if (c == 'd' && grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.FLOOR)){
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+            playerCoords[0]++;
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+        }
     }
 
 }
