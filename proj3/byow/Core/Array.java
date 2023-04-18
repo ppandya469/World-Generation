@@ -105,7 +105,8 @@ public class Array {
     }
 
     private String drawHallway(Room r1, Room r2) {
-        Room hh = hHoriz(r1, r.nextInt(r2.x, r2.x + r2.w - HALLSIZE));
+        //Room hh = hHoriz(r1, r.nextInt(r2.x, r2.x + r2.w - HALLSIZE));
+        Room hh = hHoriz(r1, r2.x + (r2.w / 2) + HALLSIZE);
         Room hv = hVertic(r2, hh.y);
         hh.drawRoom(grid);
         hv.drawRoom(grid);
@@ -113,17 +114,17 @@ public class Array {
     }
 
     private Room hHoriz(Room origin, int x) {
-        if (x >= WIDTH - 1) {
-            x = WIDTH - 2;
+        if (x >= WIDTH) {
+            x = WIDTH - 1;
         }
-        if (x < 0) {
-            x = 0;
+        if (x < HALLSIZE) {
+            x = HALLSIZE;
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - origin.w + HALLSIZE + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
+            return new Room(x - origin.x - origin.w + HALLSIZE + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - 1));
         }
-        return new Room(origin.x - x + HALLSIZE, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
+        return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - 1));
     }
 
     private Room hVertic(Room origin, int y) {
