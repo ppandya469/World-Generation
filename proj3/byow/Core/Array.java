@@ -121,7 +121,7 @@ public class Array {
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - origin.w, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
+            return new Room(x - origin.x - origin.w + HALLSIZE + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
         }
         return new Room(origin.x - x + HALLSIZE, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
     }
