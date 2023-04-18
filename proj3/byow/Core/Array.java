@@ -16,7 +16,7 @@ public class Array {
     private static final int MINROOM = 7;
     private static final int MAXROOM = 12;
     private static final int ROOMSMIN = 6;
-    private static final int ROOMSMAX = 12;
+    private static final int ROOMSMAX = 10;
     private static final int HALLSIZE = 2;
     public TETile[][] grid;
     private Random r = new Random();
@@ -115,16 +115,16 @@ public class Array {
 
     private Room hHoriz(Room origin, int x) {
         if (x >= WIDTH) {
-            x = WIDTH - 1;
+            x = WIDTH - HALLSIZE;
         }
         if (x < HALLSIZE) {
             x = HALLSIZE;
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - origin.w + HALLSIZE + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - 1));
+            return new Room(x - origin.x - origin.w + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
-        return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - 1));
+        return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
     }
 
     private Room hVertic(Room origin, int y) {
