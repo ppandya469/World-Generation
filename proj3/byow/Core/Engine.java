@@ -4,6 +4,8 @@ import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.awt.*;
+
 public class Engine {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
@@ -17,6 +19,7 @@ public class Engine {
     public void interactWithKeyboard() {
         Array a = new Array(WIDTH, HEIGHT);
         ter.initialize(WIDTH, HEIGHT);
+        StdDraw.setPenColor(Color.WHITE);
         ter.renderFrame(a.grid);
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
@@ -66,6 +69,11 @@ public class Engine {
     public static void main(String[] args) {
         Engine e = new Engine();
         e.interactWithKeyboard();
+        StdDraw.setPenColor(Color.WHITE);
+        Font fontSmall = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(fontSmall);
+        StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
+        StdDraw.textLeft(0, HEIGHT - 1, "ui test");
         /*TETile[][] t = e.interactWithInputString("N9274560155S");
         e.ter.initialize(t.length, t[0].length);
         e.ter.renderFrame(t);*/

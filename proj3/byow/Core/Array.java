@@ -22,6 +22,7 @@ public class Array {
     private Random r = new Random();
     private ArrayList<Room> roomList;
     private boolean gettingSeed = false;
+    private boolean awaitingQ = false;
     private String seed = "";
     private int[] playerCoords;
     private class Room {
@@ -40,9 +41,6 @@ public class Array {
         private void drawRoom(TETile[][] target) {
             for (int a = x; a <= (x + w); a++) {
                 for (int b = y; b <= (y + h); b++) {
-                    if (a >= WIDTH || b >= HEIGHT) {
-                        break;
-                    }
                     if ((a == x || a == (x + w) || b == y || b == (y + h)) && target[a][b] != Tileset.FLOOR) {
                         target[a][b] = Tileset.WALL;
                     } else {
@@ -65,14 +63,18 @@ public class Array {
     public Array(int w, int h) {
         WIDTH = w;
         HEIGHT = h;
-        grid = new TETile[WIDTH][HEIGHT];
+        grid = new TETile[WIDTH][HEIGHT + 1];
         fillArray();
     }
 
     private void fillArray() {
         for (int a = 0; a < WIDTH; a++) {
-            for (int b = 0; b < HEIGHT; b++) {
-                grid[a][b] = Tileset.NOTHING;
+            for (int b = 0; b <= HEIGHT; b++) {
+                if (b == HEIGHT) {
+                    grid[a][b] = Tileset.WALL;
+                } else {
+                    grid[a][b] = Tileset.NOTHING;
+                }
             }
         }
 
@@ -111,22 +113,22 @@ public class Array {
     }
 
     private Room hHoriz(Room origin, int x) {
-        if (x >= WIDTH) {
-            x = WIDTH - 1;
+        if (x >= WIDTH - 1) {
+            x = WIDTH - 2;
         }
         if (x < 0) {
             x = 0;
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
+            return new Room(x - origin.x - origin.w, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h));
         }
         return new Room(origin.x - x + HALLSIZE, HALLSIZE, x, r.nextInt(origin.y, origin.y + origin.h));
     }
 
     private Room hVertic(Room origin, int y) {
-        if (y >= HEIGHT) {
-            y = HEIGHT - 1;
+        if (y >= HEIGHT - 1) {
+            y = HEIGHT - 2;
         }
         if (y < 0) {
             y = 0;
@@ -138,21 +140,34 @@ public class Array {
         return new Room(HALLSIZE, y - origin.y - origin.h + HALLSIZE + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h - HALLSIZE);
     }
 
-    public TETile[][] handleCommand(char c){
+    public TETile[][] handleCommand(char c) {
+        if ((c == 'q' || c == 'Q') && awaitingQ) {
+            saveandquit();
+        }
         if (c == 'S') {
             gettingSeed = false;
             r = new Random(Long.valueOf(seed));
             fillArray();
         }
+        if (awaitingQ) {
+            awaitingQ = false;
+        }
         if (gettingSeed) {
             seed = seed + Character.toString(c);
             return grid;
+        }
+        if (c == ':') {
+            awaitingQ = true;
         }
         if (c == 'N') {
             gettingSeed = true;
         }
         playerMove(c);
         return grid;
+    }
+
+    private void saveandquit() {
+        System.out.println("saving and quitting");
     }
 
     private void playerMove(char c) {
@@ -172,6 +187,13 @@ public class Array {
             grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
             playerCoords[0]++;
             grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+        }
+    }
+
+    public static void main(String[] args) {
+        Array a = new Array(80, 50);
+        for (int i = 0; i < 1000; i++) {
+            a.fillArray();
         }
     }
 
