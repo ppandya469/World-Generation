@@ -2,6 +2,7 @@ package byow.Core;
 
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
+import edu.princeton.cs.algs4.StdDraw;
 
 public class Engine {
     TERenderer ter = new TERenderer();
@@ -14,7 +15,15 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
-        interactWithInputString("");
+        Array a = new Array(WIDTH, HEIGHT);
+        ter.initialize(WIDTH, HEIGHT);
+        ter.renderFrame(a.grid);
+        while (true) {
+            if (StdDraw.hasNextKeyTyped()) {
+                a.handleCommand(StdDraw.nextKeyTyped());
+                ter.renderFrame(a.grid);
+            }
+        }
     }
 
     /**
@@ -56,8 +65,9 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        TETile[][] t = e.interactWithInputString("N92745015Sddddwaas");
+        e.interactWithKeyboard();
+        /*TETile[][] t = e.interactWithInputString("N9274560155S");
         e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);
+        e.ter.renderFrame(t);*/
     }
 }
