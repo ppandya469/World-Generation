@@ -145,7 +145,7 @@ public class Array {
         return new Room(HALLSIZE, y - origin.y - origin.h + HALLSIZE + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h - HALLSIZE);
     }
 
-    public TETile[][] handleCommand(char c) { //this is so cool
+    public TETile[][] handleCommand(char c) {
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
         }
