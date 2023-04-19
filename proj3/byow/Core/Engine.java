@@ -22,8 +22,11 @@ public class Engine {
         ter.renderFrame(a.grid);
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
-                a.handleCommand(StdDraw.nextKeyTyped());
+                String out = a.handleCommand(StdDraw.nextKeyTyped());
                 ter.renderFrame(a.grid);
+                if (out.equals("quit")) {
+                    System.exit(0);
+                }
             }
         }
     }
@@ -60,9 +63,6 @@ public class Engine {
         Array a = new Array(WIDTH, HEIGHT);
         for (int i = 0; i < c.length; i++) {
             String out = a.handleCommand(c[i]);
-            if (out.equals("quit")) {
-                System.exit(0);
-            }
         }
         System.out.println(input);
         return a.grid;

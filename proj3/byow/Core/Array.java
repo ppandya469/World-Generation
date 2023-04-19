@@ -206,6 +206,10 @@ public class Array {
         for (int a = 0; a < HEIGHT; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
+                if (tileLoad.get(row[b]).equals(Tileset.AVATAR)) {
+                    playerCoords[0] = b;
+                    playerCoords[1] = a;
+                }
                 grid[b][a] = tileLoad.get(row[b]);
             }
         }
