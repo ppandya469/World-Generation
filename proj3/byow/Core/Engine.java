@@ -59,7 +59,10 @@ public class Engine {
         char[] c = input.toCharArray();
         Array a = new Array(WIDTH, HEIGHT);
         for (int i = 0; i < c.length; i++) {
-            a.handleCommand(c[i]);
+            String out = a.handleCommand(c[i]);
+            if (out.equals("quit")) {
+                System.exit(0);
+            }
         }
         System.out.println(input);
         return a.grid;

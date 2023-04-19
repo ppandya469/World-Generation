@@ -2,15 +2,15 @@ package byow.Core;
 
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import edu.princeton.cs.algs4.In;
 
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
-import java.util.TreeMap;
-import java.io.FileWriter;
+import java.util.Scanner;
 
 public class Array {
 
@@ -29,6 +29,8 @@ public class Array {
     private String seed = "";
     private int[] playerCoords;
     private ArrayList playerMoves = new ArrayList<>();
+    private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3');
+    private Map<Character, TETile> tileLoad = Map.of('0', Tileset.NOTHING, '1', Tileset.AVATAR, '2', Tileset.FLOOR, '3', Tileset.WALL);
     private class Room {
 
         private String type = "generic";
@@ -154,9 +156,10 @@ public class Array {
         return new Room(HALLSIZE, y - origin.y - origin.h + HALLSIZE + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h - HALLSIZE);
     }
 
-    public TETile[][] handleCommand(char c) {
+    public String handleCommand(char c) {
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
+            return "quit";
         }
         if (c == 'S') {
             gettingSeed = false;
@@ -168,7 +171,7 @@ public class Array {
         }
         if (gettingSeed) {
             seed = seed + Character.toString(c);
-            return grid;
+            return seed;
         }
         if (c == ':') {
             awaitingQ = true;
@@ -180,26 +183,35 @@ public class Array {
             load();
         }
         playerMove(c);
-        return grid;
+        return "done";
     }
 
     private void saveandquit() {
         try {
-            FileWriter currentWorld = new FileWriter("SavedInfo.txt");
-            currentWorld.write(seed);
-            for (Object i : playerMoves) {
-                currentWorld.write((String) i);
+            FileWriter f = new FileWriter("save.txt");
+            for (int a = 0; a <= HEIGHT; a++) {
+                for (int b = 0; b < WIDTH; b++) {
+                    f.write(tiles.get(grid[b][a]));
+                }
+                f.write(System.getProperty("line.separator"));
             }
-            currentWorld.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        // system.out exit??
-
     }
 
     private void load() {
-        System.out.println("loading");
+        In in = new In("save.txt");
+
+        for (int a = 0; a < HEIGHT; a++) {
+            char[] row = in.readString().toCharArray();
+            for (int b = 0; b < WIDTH; b++) {
+                grid[b][a] = tileLoad.get(row[b]);
+            }
+        }
+        for (int c = 0; c < WIDTH; c++) {
+            grid[c][HEIGHT] = Tileset.WALL;
+        }
     }
 
     private void playerMove(char c) {
