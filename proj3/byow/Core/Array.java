@@ -4,10 +4,13 @@ import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.TreeMap;
+import java.io.FileWriter;
 
 public class Array {
 
@@ -25,6 +28,7 @@ public class Array {
     private boolean awaitingQ = false;
     private String seed = "";
     private int[] playerCoords;
+    private ArrayList playerMoves = new ArrayList<>();
     private class Room {
 
         private int w;
@@ -50,7 +54,7 @@ public class Array {
             }
         }
 
-        private int[] addPlayer(TETile[][] target) {
+        private int[] addPlayer(TETile[][] target) { //don't understand
             int[] coords = new int[2];
             coords[0] = x + w / 2;
             coords[1] = y + h /2;
@@ -63,11 +67,11 @@ public class Array {
     public Array(int w, int h) {
         WIDTH = w;
         HEIGHT = h;
-        grid = new TETile[WIDTH][HEIGHT + 1];
+        grid = new TETile[WIDTH][HEIGHT + 1]; //why height plus one
         fillArray();
     }
 
-    private void fillArray() {
+    private void fillArray() { //what is the purpose of this
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
                 if (b == HEIGHT) {
@@ -78,7 +82,7 @@ public class Array {
             }
         }
 
-        int rooms = r.nextInt(ROOMSMIN, ROOMSMAX);
+        int rooms = r.nextInt(ROOMSMIN, ROOMSMAX); //come back to understand randomness
         roomList = new ArrayList<>();
         for (int i = 0; i < rooms; i++) {
             Room rm = generateRoom();
@@ -110,7 +114,7 @@ public class Array {
         Room hv = hVertic(r2, hh.y);
         hh.drawRoom(grid);
         hv.drawRoom(grid);
-        return "horizontal " + Integer.toString(hh.x) + " vertical " + Integer.toString(hv.y);
+        return "horizontal " + Integer.toString(hh.x) + " vertical " + Integer.toString(hv.y); //why are we returning a string
     }
 
     private Room hHoriz(Room origin, int x) {
@@ -141,7 +145,7 @@ public class Array {
         return new Room(HALLSIZE, y - origin.y - origin.h + HALLSIZE + HALLSIZE, r.nextInt(origin.x, origin.x + origin.w - HALLSIZE), origin.y + origin.h - HALLSIZE);
     }
 
-    public TETile[][] handleCommand(char c) {
+    public TETile[][] handleCommand(char c) { //this is so cool
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
         }
@@ -163,12 +167,30 @@ public class Array {
         if (c == 'N') {
             gettingSeed = true;
         }
+        if (c == 'l' || c == 'L') {
+            load();
+        }
         playerMove(c);
         return grid;
     }
 
     private void saveandquit() {
-        System.out.println("saving and quitting");
+        try {
+            FileWriter currentWorld = new FileWriter("SavedInfo.txt");
+            currentWorld.write(seed);
+            for (Object i : playerMoves) {
+                currentWorld.write((String) i);
+            }
+            currentWorld.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        // system.out exit??
+
+    }
+
+    private void load() {
+        System.out.println("loading");
     }
 
     private void playerMove(char c) {
@@ -189,6 +211,7 @@ public class Array {
             playerCoords[0]++;
             grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
         }
+        playerMoves.add(c);
     }
 
     public static void main(String[] args) {
