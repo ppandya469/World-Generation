@@ -14,12 +14,12 @@ import java.io.FileWriter;
 
 public class Array {
 
-    private int WIDTH;
-    private int HEIGHT;
-    private static final int MINROOM = 7;
-    private static final int MAXROOM = 12;
-    private static final int ROOMSMIN = 6;
-    private static final int ROOMSMAX = 10;
+    private int WIDTH = 80;
+    private int HEIGHT = 50;
+    private int MINROOM = 7;
+    private int MAXROOM = 12;
+    private int ROOMSMIN = 6;
+    private int ROOMSMAX = 10;
     private static final int HALLSIZE = 2;
     public TETile[][] grid;
     private Random r = new Random();
@@ -31,6 +31,7 @@ public class Array {
     private ArrayList playerMoves = new ArrayList<>();
     private class Room {
 
+        private String type = "generic";
         private int w;
         private int h;
         private int x;
@@ -52,6 +53,14 @@ public class Array {
                     }
                 }
             }
+            int choice = r.nextInt(5);
+            type = switch (choice) {
+                case 0 -> "rubble";
+                case 1 -> "fountain";
+                case 2 -> "rug";
+                case 3 -> "chest";
+                default -> "key";
+            };
         }
 
         private int[] addPlayer(TETile[][] target) { //don't understand
