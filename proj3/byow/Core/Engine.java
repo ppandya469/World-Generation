@@ -18,8 +18,7 @@ public class Engine {
      */
     public void interactWithKeyboard() {
         Array a = new Array(WIDTH, HEIGHT);
-        ter.initialize(WIDTH, HEIGHT);
-        StdDraw.setPenColor(Color.WHITE);
+        ter.initialize(WIDTH, HEIGHT + 3);
         ter.renderFrame(a.grid);
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
