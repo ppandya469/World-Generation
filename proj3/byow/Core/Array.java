@@ -181,28 +181,22 @@ public class Array {
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
             return "quit";
-        }
-        if (c == 'S' || c == 's') {
+        } else if (c == 'S' || c == 's') {
             gettingSeed = false;
             if (seed.length() > 0) {
                 r = new Random(Long.valueOf(seed));
                 fillArray();
             }
-        }
-        if (awaitingQ) {
+        } else if (awaitingQ) {
             awaitingQ = false;
-        }
-        if (gettingSeed) {
+        } else if (gettingSeed) {
             seed = seed + Character.toString(c);
             return seed;
-        }
-        if (c == ':') {
+        } else if (c == ':') {
             awaitingQ = true;
-        }
-        if (c == 'N' || c == 'n') {
+        } else if (c == 'N' || c == 'n') {
             gettingSeed = true;
-        }
-        if (c == 'l' || c == 'L') {
+        } else if (c == 'l' || c == 'L') {
             load();
         }
         playerMove(c);
