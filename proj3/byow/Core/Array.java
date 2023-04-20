@@ -61,16 +61,34 @@ public class Array {
                 case 1 -> "fountain";
                 case 2 -> "rug";
                 case 3 -> "chest";
-                default -> "key";
+                default -> "generic";
             };
         }
 
         private int[] addPlayer(TETile[][] target) { //don't understand
+            type = "generic";
             int[] coords = new int[2];
             coords[0] = x + w / 2;
             coords[1] = y + h /2;
             target[coords[0]][coords[1]] = Tileset.AVATAR;
             return coords;
+        }
+
+        private void decorateRoom(TETile[][] target) {
+            if (type.equals("rug")) {
+                /*int rugMargin = 3;
+                for (int i = x + rugMargin; i <= x + w - rugMargin; i++) {
+                    for (int a = y + rugMargin; a <= y + h - rugMargin; a++) {
+                        target[i][a] = Tileset.RUG;
+                    }
+                }*/
+            } else if (type.equals("rubble")) {
+
+            } else if (type.equals("chest")) {
+
+            } else if (type.equals("fountain")) {
+
+            }
         }
 
     }
@@ -102,6 +120,9 @@ public class Array {
         }
         generateHallways();
         playerCoords = roomList.get(0).addPlayer(grid);
+        for (Room r : roomList) {
+            r.decorateRoom(grid);
+        }
     }
 
     private Room generateRoom() {
@@ -163,8 +184,10 @@ public class Array {
         }
         if (c == 'S' || c == 's') {
             gettingSeed = false;
-            r = new Random(Long.valueOf(seed));
-            fillArray();
+            if (seed.length() > 0) {
+                r = new Random(Long.valueOf(seed));
+                fillArray();
+            }
         }
         if (awaitingQ) {
             awaitingQ = false;

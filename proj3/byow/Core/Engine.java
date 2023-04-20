@@ -70,14 +70,14 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        /*e.interactWithKeyboard();
+        e.interactWithKeyboard();
         StdDraw.setPenColor(Color.WHITE);
         Font fontSmall = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(fontSmall);
         StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
-        StdDraw.textLeft(0, HEIGHT - 1, "ui test");*/
-        TETile[][] t = e.interactWithInputString("n5643591630821615871swwaawd");
+        StdDraw.textLeft(0, HEIGHT - 1, "ui test");
+        /*TETile[][] t = e.interactWithInputString("n5534289s");
         e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);
+        e.ter.renderFrame(t);*/
     }
 }

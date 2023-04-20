@@ -22,6 +22,8 @@ public class Tileset {
             "wall", "byow/TileEngine/walltile.png");
     public static final TETile FLOOR = new TETile('·', new Color(128, 192, 128), Color.black,
             "floor", "byow/TileEngine/floortile.png");
+    public static final TETile RUG = new TETile('#', Color.black, Color.cyan,
+            "rug", "byow/TileEngine/rugtile.png");
     public static final TETile NOTHING = new TETile(' ', Color.black, Color.black, "nothing");
     public static final TETile GRASS = new TETile('"', Color.green, Color.black, "grass");
     public static final TETile WATER = new TETile('≈', Color.blue, Color.black, "water");
