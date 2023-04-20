@@ -76,7 +76,7 @@ public class Engine {
         StdDraw.setFont(fontSmall);
         StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
         StdDraw.textLeft(0, HEIGHT - 1, "ui test");
-        /*TETile[][] t = e.interactWithInputString("N9274560155S");
+        /*TETile[][] t = e.interactWithInputString("n5643591630821615871swwaawd");
         e.ter.initialize(t.length, t[0].length);
         e.ter.renderFrame(t);*/
     }

@@ -161,7 +161,7 @@ public class Array {
             saveandquit();
             return "quit";
         }
-        if (c == 'S') {
+        if (c == 'S' || c == 's') {
             gettingSeed = false;
             r = new Random(Long.valueOf(seed));
             fillArray();
@@ -176,7 +176,7 @@ public class Array {
         if (c == ':') {
             awaitingQ = true;
         }
-        if (c == 'N') {
+        if (c == 'N' || c == 'n') {
             gettingSeed = true;
         }
         if (c == 'l' || c == 'L') {
