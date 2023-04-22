@@ -4,13 +4,13 @@ import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.In;
 
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class Array {
 
