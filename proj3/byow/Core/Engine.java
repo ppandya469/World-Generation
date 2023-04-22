@@ -73,7 +73,8 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        e.interactWithKeyboard();
+
+        //e.interactWithKeyboard();
 
         /*StdDraw.setPenColor(Color.WHITE);
         Font fontSmall = new Font("Monaco", Font.BOLD, 20);
@@ -83,10 +84,10 @@ public class Engine {
 
         //TETile[][] t = e.interactWithInputString("n8391172972297503990swswswwawadas");
 
-        /*e.interactWithInputString("n8391172972297503990swswswwawa:q");
-        TETile[][] t = e.interactWithInputString("ldas");*/
+        e.interactWithInputString("n8391172972297503990swswswwawa:q");
+        TETile[][] t = e.interactWithInputString("ldas");
 
-        /*e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);*/
+        e.ter.initialize(t.length, t[0].length);
+        e.ter.renderFrame(t);
     }
 }

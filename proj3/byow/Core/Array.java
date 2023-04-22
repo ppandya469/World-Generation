@@ -187,6 +187,7 @@ public class Array {
                 r = new Random(Long.valueOf(seed));
                 fillArray();
             }
+            seed = "";
         } else if (awaitingQ) {
             awaitingQ = false;
         } else if (gettingSeed) {
