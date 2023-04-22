@@ -3,8 +3,10 @@ package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 
 //import java.io.FileNotFoundException;
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class Array {
     private ArrayList<Room> roomList;
     private boolean gettingSeed = false;
     private boolean awaitingQ = false;
+    public boolean ready = false;
     private String seed = "";
     private int[] playerCoords;
     private ArrayList playerMoves = new ArrayList<>();
@@ -184,12 +187,19 @@ public class Array {
         } else if (c == 'S' || c == 's') {
             gettingSeed = false;
             if (seed.length() > 0) {
+                ready = true;
                 r = new Random(Long.valueOf(seed));
                 fillArray();
             }
             seed = "";
         } else if (awaitingQ) {
             awaitingQ = false;
+            if (c == 'l' || c == 'L') {
+                ready = true;
+                load();
+            } else if (c == 'N' || c == 'n') {
+                gettingSeed = true;
+            }
         } else if (gettingSeed) {
             seed = seed + Character.toString(c);
             return seed;
@@ -255,6 +265,23 @@ public class Array {
             grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
         }
         playerMoves.add(c);
+    }
+
+    public void mainMenu() {
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        Font font = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        if (gettingSeed) {
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Enter a random seed! (S) when finished");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
+        } else {
+            awaitingQ = true;
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "New Game (N)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (Q)");
+        }
+        StdDraw.show();
     }
 
     public static void main(String[] args) {

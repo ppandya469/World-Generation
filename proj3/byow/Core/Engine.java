@@ -3,6 +3,8 @@ package byow.Core;
 import byow.TileEngine.TERenderer;
 import byow.TileEngine.TETile;
 import edu.princeton.cs.algs4.StdDraw;
+
+import java.awt.*;
 //import org.junit.Test;
 
 //import java.awt.*;
@@ -22,11 +24,24 @@ public class Engine {
     public void interactWithKeyboard() {
         Array a = new Array(WIDTH, HEIGHT);
         ter.initialize(WIDTH, HEIGHT);
-        ter.renderFrame(a.grid);
+        /*ter.renderFrame(a.grid);
         while (true) {
             if (StdDraw.hasNextKeyTyped()) {
                 String out = a.handleCommand(StdDraw.nextKeyTyped());
                 ter.renderFrame(a.grid);
+                if (out.equals("quit")) {
+                    System.exit(0);
+                }
+            }
+        }*/
+        while (true) {
+            if (a.ready) {
+                ter.renderFrame(a.grid);
+            } else {
+                a.mainMenu();
+            }
+            if (StdDraw.hasNextKeyTyped()) {
+                String out = a.handleCommand(StdDraw.nextKeyTyped());
                 if (out.equals("quit")) {
                     System.exit(0);
                 }
@@ -68,21 +83,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-
-        //e.interactWithKeyboard();
-
-        /*StdDraw.setPenColor(Color.WHITE);
-        Font fontSmall = new Font("Monaco", Font.BOLD, 20);
-        StdDraw.setFont(fontSmall);
-        StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
-        StdDraw.textLeft(0, HEIGHT - 1, "ui test");*/
-
-        //TETile[][] t = e.interactWithInputString("n8391172972297503990swswswwawadas");
-
-        e.interactWithInputString("n8391172972297503990swswswwawa:q");
-        TETile[][] t = e.interactWithInputString("ldas");
-
-        e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);
+        e.interactWithKeyboard();
     }
 }
