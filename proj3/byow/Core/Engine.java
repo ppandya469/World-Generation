@@ -86,7 +86,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-<<<<<<< HEAD
         //e.interactWithKeyboard();
 
         /*StdDraw.setPenColor(Color.WHITE);
@@ -102,8 +101,6 @@ public class Engine {
 
         e.ter.initialize(t.length, t[0].length);
         e.ter.renderFrame(t);
-=======
         e.interactWithKeyboard();
->>>>>>> ec08cc62493ab1f30f9a68454a711d16af678e18
     }
 }
