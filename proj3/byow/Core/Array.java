@@ -3,8 +3,10 @@ package byow.Core;
 import byow.TileEngine.TETile;
 import byow.TileEngine.Tileset;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
 
 //import java.io.FileNotFoundException;
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,11 +23,14 @@ public class Array {
     private int ROOMSMIN = 6;
     private int ROOMSMAX = 10;
     private static final int HALLSIZE = 2;
+    private char playertilechar = '1';
     public TETile[][] grid;
     private Random r = new Random();
     private ArrayList<Room> roomList;
     private boolean gettingSeed = false;
     private boolean awaitingQ = false;
+    private boolean changingChar;
+    public boolean ready = false;
     private String seed = "";
     private int[] playerCoords;
     private ArrayList playerMoves = new ArrayList<>();
@@ -70,7 +75,7 @@ public class Array {
             int[] coords = new int[2];
             coords[0] = x + w / 2;
             coords[1] = y + h /2;
-            target[coords[0]][coords[1]] = Tileset.AVATAR;
+            target[coords[0]][coords[1]] = tileLoad.get(playertilechar);
             return coords;
         }
 
@@ -184,11 +189,21 @@ public class Array {
         } else if (c == 'S' || c == 's') {
             gettingSeed = false;
             if (seed.length() > 0) {
+                ready = true;
                 r = new Random(Long.valueOf(seed));
                 fillArray();
             }
+            seed = "";
         } else if (awaitingQ) {
             awaitingQ = false;
+            if (c == 'l' || c == 'L') {
+                ready = true;
+                load();
+            } else if (c == 'N' || c == 'n') {
+                gettingSeed = true;
+            } else if (c == 'C' || c == 'c') {
+                changingChar = true;
+            }
         } else if (gettingSeed) {
             seed = seed + Character.toString(c);
             return seed;
@@ -223,7 +238,7 @@ public class Array {
         for (int a = 0; a < HEIGHT; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
-                if (tileLoad.get(row[b]).equals(Tileset.AVATAR)) {
+                if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
                     playerCoords[0] = b;
                     playerCoords[1] = a;
                 }
@@ -239,21 +254,44 @@ public class Array {
         if (c == 'w' && grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.FLOOR)) {
             grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
             playerCoords[1]++;
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
         } else if (c == 'a' && grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.FLOOR)) {
             grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
             playerCoords[0]--;
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
         } else if (c == 's' && grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.FLOOR)) {
             grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
             playerCoords[1]--;
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
         } else if (c == 'd' && grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.FLOOR)){
             grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
             playerCoords[0]++;
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.AVATAR;
+            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
         }
         playerMoves.add(c);
+    }
+
+    public void mainMenu() {
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        Font font = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        if (gettingSeed) {
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Enter a random seed! (S) when finished");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
+        } else if (changingChar) {
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
+            int optionSelected = 0;
+
+        } else {
+            awaitingQ = true;
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "New Game (N)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (Q)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Change Avatar (C)");
+        }
+        StdDraw.show();
     }
 
     public static void main(String[] args) {
