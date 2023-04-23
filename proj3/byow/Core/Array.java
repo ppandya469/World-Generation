@@ -34,8 +34,8 @@ public class Array {
     private String seed = "";
     private int[] playerCoords;
     private ArrayList playerMoves = new ArrayList<>();
-    private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3');
-    private Map<Character, TETile> tileLoad = Map.of('0', Tileset.NOTHING, '1', Tileset.AVATAR, '2', Tileset.FLOOR, '3', Tileset.WALL);
+    private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3', Tileset.FLOWER, '4', Tileset.TREE, '5', Tileset.WATER, '6');
+    private Map<Character, TETile> tileLoad = Map.of('0', Tileset.NOTHING, '1', Tileset.AVATAR, '2', Tileset.FLOOR, '3', Tileset.WALL, '4', Tileset.FLOWER, '5', Tileset.TREE, '6', Tileset.WATER);
     private class Room {
 
         private String type = "generic";
@@ -77,6 +77,7 @@ public class Array {
             coords[1] = y + h /2;
             target[coords[0]][coords[1]] = tileLoad.get(playertilechar);
             return coords;
+
         }
 
         private void decorateRoom(TETile[][] target) {
@@ -213,6 +214,12 @@ public class Array {
             gettingSeed = true;
         } else if (c == 'l' || c == 'L') {
             load();
+        } else if (c == 'f' || c == 'F') {
+            playertilechar = '4';
+        } else if (c == 't' || c == 'T') {
+            playertilechar = '5';
+        } else if (c == 'v' || c == 'V') {
+            playertilechar = '6';
         }
         playerMove(c);
         return "done";
@@ -280,15 +287,16 @@ public class Array {
             StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Enter a random seed! (S) when finished");
             StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
         } else if (changingChar) {
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
-            int optionSelected = 0;
-
+            //StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (FN)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (TN)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (VN)");
         } else {
             awaitingQ = true;
             StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
             StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "New Game (N)");
             StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (Q)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (:Q)");
             StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Change Avatar (C)");
         }
         StdDraw.show();
