@@ -59,16 +59,19 @@ public class Engine {
         // that works for different input types.
         char[] c = input.toCharArray();
         Array a = new Array(WIDTH, HEIGHT);
+        //ter.initialize(WIDTH, HEIGHT);
+
         for (int i = 0; i < c.length; i++) {
             String out = a.handleCommand(c[i]);
         }
+        //ter.renderFrame(a.grid);
         System.out.println(input);
         return a.grid;
     }
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        e.interactWithKeyboard();
+        //e.interactWithKeyboard();
 
         /*StdDraw.setPenColor(Color.WHITE);
         Font fontSmall = new Font("Monaco", Font.BOLD, 20);
@@ -78,10 +81,10 @@ public class Engine {
 
         //TETile[][] t = e.interactWithInputString("n8391172972297503990swswswwawadas");
 
-        /*e.interactWithInputString("n8391172972297503990swswswwawa:q");
-        TETile[][] t = e.interactWithInputString("ldas");*/
+        e.interactWithInputString("n8391172972297503990swswswwawa:q");
+        TETile[][] t = e.interactWithInputString("ldas");
 
-        /*e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);*/
+        e.ter.initialize(t.length, t[0].length);
+        e.ter.renderFrame(t);
     }
 }
