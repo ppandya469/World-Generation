@@ -37,6 +37,8 @@ public class Engine {
         while (true) {
             if (a.ready) {
                 ter.renderFrame(a.grid);
+
+                a.HUD(StdDraw.mouseX(), StdDraw.mouseY());
             } else {
                 a.mainMenu();
             }
@@ -46,6 +48,8 @@ public class Engine {
                     System.exit(0);
                 }
             }
+            //if (StdDraw.isMousePressed()) {
+            //}
         }
     }
 
