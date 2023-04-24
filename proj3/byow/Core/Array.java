@@ -25,7 +25,7 @@ public class Array {
     private int ROOMSMIN = 6;
     private int ROOMSMAX = 10;
     private int COINNUM = 5;
-    private int timer = 10;
+    public long timer = 10;
     private int coinsCollected = 0;
     private static final int HALLSIZE = 2;
     private char playertilechar = '6';
@@ -165,7 +165,7 @@ public class Array {
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - origin.w + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
+            return new Room(x - origin.x - origin.w, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
         return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
     }
@@ -354,12 +354,8 @@ public class Array {
         Font font = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(font);
         StdDraw.text(WIDTH / 2, HEIGHT / 2, "You have 10 seconds to collect the coins.");
-        StdDraw.show(5); //waits for too long
-        handleCommand('n');
+        //StdDraw.show(1);
 
-        fillArray();
-
-        /*
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
                 if (b == HEIGHT) {
@@ -369,33 +365,20 @@ public class Array {
                 }
             }
         }
-         */
 
         Room r = new Room(20, 10, 5, 5);
         r.drawRoom(grid);
         r.type = "coins";
         r.decorateRoom(grid);
         playerCoords = r.addPlayer(grid);
+    }
 
-        /*
-        Timer timer1 = new Timer();
-        int sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
-        while (timer > 0) {
-            if (java.time.Clock.systemDefaultZone().millis() / 1000 > sysTicks) {
-                timer--;
-                sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
-            }
-        }
-        */
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
+    public void encWinLose() {
         if (coinsCollected == COINNUM) {
             load();
             inEnc = false;
+            coinsCollected = 0;
+            timer = 10;
         } else {
             ready = false;
         }
@@ -437,7 +420,7 @@ public class Array {
         if (x < WIDTH && y < HEIGHT) {
             TETile tileHolder = grid[(int) x][(int) y];
             if (inEnc) {
-                StdDraw.textLeft(1, HEIGHT - 1, Integer.toString(timer));
+                StdDraw.textLeft(1, HEIGHT - 1, Long.toString(timer));
             } else if (tileHolder == Tileset.FLOOR) {
                 StdDraw.textLeft(1, HEIGHT + 4, "Floor");
             } else if (tileHolder == Tileset.WALL) {
@@ -455,19 +438,8 @@ public class Array {
         StdDraw.show();
     }
 
-    public void HUGNothing () {
-        StdDraw.setPenColor(Color.WHITE);
-        Font font = new Font("Monaco", Font.BOLD, 15);
-        StdDraw.setFont(font);
-        StdDraw.textLeft(1, HEIGHT + 4, "Nothing");
-        StdDraw.show();
-    }
-
     public static void main(String[] args) {
-        Array a = new Array(80, 50);
-        for (int i = 0; i < 1000; i++) {
-            a.fillArray();
-        }
+
     }
 
 }

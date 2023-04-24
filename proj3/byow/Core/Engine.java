@@ -38,6 +38,18 @@ public class Engine {
             if (a.ready) {
                 ter.renderFrame(a.grid);
                 a.HUD(StdDraw.mouseX(), StdDraw.mouseY());
+                if (a.inEnc) {
+                    long sysTicks = System.currentTimeMillis();
+                    if (System.currentTimeMillis() - sysTicks > 1000) {
+                        System.out.println(a.timer);
+                        a.timer--;
+                        sysTicks = System.currentTimeMillis();
+                    }
+                    if (a.timer < 0) {
+                        System.out.println("win/lose");
+                        a.encWinLose();
+                    }
+                }
             } else {
                 a.mainMenu();
             }
