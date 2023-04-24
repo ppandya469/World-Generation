@@ -358,19 +358,21 @@ public class Array {
 
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
-                if (b == HEIGHT) {
-                    grid[a][b] = Tileset.WALL;
-                } else {
+                //if (b == HEIGHT) {
+                    //grid[a][b] = Tileset.WALL;
+                //} else {
                     grid[a][b] = Tileset.NOTHING;
-                }
+                //}
             }
         }
 
-        Room r = new Room(20, 10, 5, 5);
+        Room r = new Room(20, 10, 30, 20);
         r.drawRoom(grid);
         r.type = "coins";
         r.decorateRoom(grid);
         playerCoords = r.addPlayer(grid);
+
+        //HUD(StdDraw.mouseX(), StdDraw.mouseY());
     }
 
     public void encWinLose() {

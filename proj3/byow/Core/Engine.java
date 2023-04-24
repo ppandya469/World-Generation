@@ -43,7 +43,9 @@ public class Engine {
                     if (System.currentTimeMillis() - sysTicks > 1000) {
                         System.out.println(a.timer);
                         a.timer--;
+
                         sysTicks = System.currentTimeMillis();
+                        //a.HUD(StdDraw.mouseX(), StdDraw.mouseY());
                     }
                     if (a.timer < 0) {
                         System.out.println("win/lose");
