@@ -22,7 +22,7 @@ public class Engine {
      * including inputs from the main menu.
      */
     public void interactWithKeyboard() {
-        Array a = new Array(WIDTH, HEIGHT);
+        Array a = new Array(WIDTH, HEIGHT - 5);
         ter.initialize(WIDTH, HEIGHT);
         /*ter.renderFrame(a.grid);
         while (true) {
@@ -37,7 +37,6 @@ public class Engine {
         while (true) {
             if (a.ready) {
                 ter.renderFrame(a.grid);
-
                 a.HUD(StdDraw.mouseX(), StdDraw.mouseY());
             } else {
                 a.mainMenu();
