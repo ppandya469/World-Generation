@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 //import java.util.Scanner;
+//import javax.swing.Timer;
 
 public class Array {
 
@@ -347,6 +348,18 @@ public class Array {
     public void encounter() {
         inEnc = true;
         saveandquit();
+
+        StdDraw.clear(Color.BLACK);
+        StdDraw.setPenColor(Color.WHITE);
+        Font font = new Font("Monaco", Font.BOLD, 20);
+        StdDraw.setFont(font);
+        StdDraw.text(WIDTH / 2, HEIGHT / 2, "You have 10 seconds to collect the coins.");
+        StdDraw.show(5); //waits for too long
+        handleCommand('n');
+
+        fillArray();
+
+        /*
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
                 if (b == HEIGHT) {
@@ -356,11 +369,16 @@ public class Array {
                 }
             }
         }
+         */
+
         Room r = new Room(20, 10, 5, 5);
         r.drawRoom(grid);
         r.type = "coins";
         r.decorateRoom(grid);
         playerCoords = r.addPlayer(grid);
+
+        /*
+        Timer timer1 = new Timer();
         int sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
         while (timer > 0) {
             if (java.time.Clock.systemDefaultZone().millis() / 1000 > sysTicks) {
@@ -368,6 +386,13 @@ public class Array {
                 sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
             }
         }
+        */
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if (coinsCollected == COINNUM) {
             load();
             inEnc = false;
@@ -381,24 +406,26 @@ public class Array {
         StdDraw.setPenColor(Color.WHITE);
         Font font = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(font);
-        if (gettingSeed) {
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Enter a random seed! (S) when finished");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
-        } else if (changingChar) {
-            //StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Choose an Avatar:");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (F)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (T)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (V)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Press N to Continue");
+        if (!inEnc) {
+            if (gettingSeed) {
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Enter a random seed! (S) when finished");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
+            } else if (changingChar) {
+                //StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Choose an Avatar:");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (F)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (T)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (V)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Press N to Continue");
 
-        } else {
-            awaitingQ = true;
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "New Game (N)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (:Q)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Change Avatar (C)");
+            } else {
+                awaitingQ = true;
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "New Game (N)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (:Q)");
+                StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Change Avatar (C)");
+            }
         }
         StdDraw.show();
     }
