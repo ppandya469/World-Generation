@@ -237,8 +237,9 @@ public class Array {
             char[] chars = ioString.toCharArray();
             for (int i = 0; i < chars.length; i++) {
                 System.out.print(chars[i]);
-                f.write(chars[i]);
+                f.write(Character.toString(chars[i]));
             }
+            f.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
