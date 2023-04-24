@@ -38,7 +38,7 @@ public class Array {
     public boolean inEnc = false;
     private String seed = "";
     private int[] playerCoords;
-    private ArrayList playerMoves = new ArrayList<>();
+    private String ioString = "";
     private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3', Tileset.FLOWER, '4', Tileset.TREE, '5', Tileset.WATER, '6', Tileset.RUG, '7');
     private Map<Character, TETile> tileLoad = Map.of('0', Tileset.NOTHING, '1', Tileset.AVATAR, '2', Tileset.FLOOR, '3', Tileset.WALL, '4', Tileset.FLOWER, '5', Tileset.TREE, '6', Tileset.WATER, '7', Tileset.RUG);
     private class Room {
@@ -183,6 +183,7 @@ public class Array {
     }
 
     public String handleCommand(char c) {
+        ioString += Character.toString(c);
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
             return "quit";
@@ -227,13 +228,16 @@ public class Array {
     private void saveandquit() {
         try {
             FileWriter f = new FileWriter("out/production/proj3/save.txt");
-            //FileWriter g = new FileWriter("playerTileType.txt");
-            //g.write(playertilechar);
-            for (int a = 0; a <= HEIGHT; a++) {
+            /*for (int a = 0; a <= HEIGHT; a++) {
                 for (int b = 0; b < WIDTH; b++) {
                     f.write(tiles.get(grid[b][a]));
                 }
                 f.write(System.getProperty("line.separator"));
+            }*/
+            char[] chars = ioString.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                System.out.print(chars[i]);
+                f.write(chars[i]);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -242,9 +246,11 @@ public class Array {
 
     private void load() {
         In in = new In("out/production/proj3/save.txt");
-        //In in2 = new In("playerTileType.txt");
-        //playertilechar = in2.readChar();
-        for (int a = 0; a < HEIGHT; a++) {
+        char[] row = in.readString().toCharArray();
+        for (int i = 0; i < row.length; i++) {
+            handleCommand(row[i]);
+        }
+        /*for (int a = 0; a < HEIGHT - 5; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
                 //if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
@@ -263,10 +269,7 @@ public class Array {
                 }
                 grid[b][a] = tileLoad.get(row[b]);
             }
-        }
-        for (int c = 0; c < WIDTH; c++) {
-            grid[c][HEIGHT] = Tileset.WALL;
-        }
+        }*/
     }
 
     private void playerMove(char c) {
@@ -335,7 +338,6 @@ public class Array {
                 coinsCollected++;
             }
         }
-        playerMoves.add(c);
     }
 
     public void encounter() {
