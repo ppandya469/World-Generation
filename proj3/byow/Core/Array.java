@@ -350,6 +350,8 @@ public class Array {
             StdDraw.textLeft(1, HEIGHT - 1, "Wall");
         } else if (tileHolder == Tileset.NOTHING) {
             StdDraw.textLeft(1, HEIGHT - 1, "Nothing");
+        } else if (tileHolder == Tileset.RUG) {
+            StdDraw.textLeft(1, HEIGHT - 1, "Encounter");
         } else {
             StdDraw.textLeft(1, HEIGHT - 1, "Player");
         }
