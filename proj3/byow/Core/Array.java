@@ -60,12 +60,9 @@ public class Array {
                     }
                 }
             }
-            int choice = r.nextInt(5);
+            int choice = r.nextInt(3);
             type = switch (choice) {
-                case 0 -> "rubble";
-                case 1 -> "fountain";
-                case 2 -> "rug";
-                case 3 -> "chest";
+                case 0, 1 -> "encounter";
                 default -> "generic";
             };
         }
@@ -81,19 +78,10 @@ public class Array {
         }
 
         private void decorateRoom(TETile[][] target) {
-            if (type.equals("rug")) {
-                /*int rugMargin = 3;
-                for (int i = x + rugMargin; i <= x + w - rugMargin; i++) {
-                    for (int a = y + rugMargin; a <= y + h - rugMargin; a++) {
-                        target[i][a] = Tileset.RUG;
-                    }
-                }*/
-            } else if (type.equals("rubble")) {
-
-            } else if (type.equals("chest")) {
-
-            } else if (type.equals("fountain")) {
-
+            if (type.equals("encounter")) {
+                int encX = r.nextInt(x + 1, x + w);
+                int encY = r.nextInt(y + 1, y + h);
+                target[encX][encY] = Tileset.RUG;
             }
         }
 
@@ -102,11 +90,11 @@ public class Array {
     public Array(int w, int h) {
         WIDTH = w;
         HEIGHT = h;
-        grid = new TETile[WIDTH][HEIGHT + 1]; //why height plus one
+        grid = new TETile[WIDTH][HEIGHT + 1];
         fillArray();
     }
 
-    private void fillArray() { //what is the purpose of this
+    private void fillArray() {
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
                 if (b == HEIGHT) {
@@ -274,24 +262,57 @@ public class Array {
     }
 
     private void playerMove(char c) {
-        if (c == 'w' && grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.FLOOR)) {
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
-            playerCoords[1]++;
-            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-        } else if (c == 'a' && grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.FLOOR)) {
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
-            playerCoords[0]--;
-            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-        } else if (c == 's' && grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.FLOOR)) {
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
-            playerCoords[1]--;
-            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-        } else if (c == 'd' && grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.FLOOR)){
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
-            playerCoords[0]++;
-            grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+        if (c == 'w') {
+            if (grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.FLOOR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+            } else if (grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.RUG)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                encounter();
+            }
+        } else if (c == 'a') {
+            if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.FLOOR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+            } else if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.RUG)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                encounter();
+            }
+        } else if (c == 's') {
+            if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.FLOOR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+            } else if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.RUG)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                encounter();
+            }
+        } else if (c == 'd'){
+            if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.FLOOR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+            } else if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.RUG)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                encounter();
+            }
         }
         playerMoves.add(c);
+    }
+
+    public void encounter() {
+
+        fillArray();
     }
 
     public void mainMenu() {
