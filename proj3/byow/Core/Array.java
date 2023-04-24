@@ -325,9 +325,12 @@ public class Array {
             StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
         } else if (changingChar) {
             //StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (FN)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (TN)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (VN)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Choose an Avatar:");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (F)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (T)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (V)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Press N to Continue");
+
         } else {
             awaitingQ = true;
             StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
