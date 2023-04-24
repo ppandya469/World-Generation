@@ -90,21 +90,6 @@ public class Engine {
 
     public static void main(String[] args) {
         Engine e = new Engine();
-        //e.interactWithKeyboard();
-
-        /*StdDraw.setPenColor(Color.WHITE);
-        Font fontSmall = new Font("Monaco", Font.BOLD, 20);
-        StdDraw.setFont(fontSmall);
-        StdDraw.line(0, HEIGHT - 2, WIDTH, HEIGHT - 2);
-        StdDraw.textLeft(0, HEIGHT - 1, "ui test");*/
-
-        //TETile[][] t = e.interactWithInputString("n8391172972297503990swswswwawadas");
-
-        e.interactWithInputString("n8391172972297503990swswswwawa:q");
-        TETile[][] t = e.interactWithInputString("ldas");
-
-        e.ter.initialize(t.length, t[0].length);
-        e.ter.renderFrame(t);
         e.interactWithKeyboard();
     }
 }

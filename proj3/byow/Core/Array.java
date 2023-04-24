@@ -9,6 +9,7 @@ import edu.princeton.cs.algs4.StdDraw;
 import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -23,9 +24,10 @@ public class Array {
     private int ROOMSMIN = 6;
     private int ROOMSMAX = 10;
     private int COINNUM = 5;
+    private int timer = 10;
     private int coinsCollected = 0;
     private static final int HALLSIZE = 2;
-    private char playertilechar = '1';
+    private char playertilechar = '6';
     public TETile[][] grid;
     private Random r = new Random();
     private ArrayList<Room> roomList;
@@ -33,6 +35,7 @@ public class Array {
     private boolean awaitingQ = false;
     private boolean changingChar;
     public boolean ready = false;
+    public boolean inEnc = false;
     private String seed = "";
     private int[] playerCoords;
     private ArrayList playerMoves = new ArrayList<>();
@@ -70,13 +73,12 @@ public class Array {
         }
 
         private int[] addPlayer(TETile[][] target) { //don't understand
-            type = "generic";
+            //type = "generic";
             int[] coords = new int[2];
             coords[0] = x + w / 2;
             coords[1] = y + h /2;
             target[coords[0]][coords[1]] = tileLoad.get(playertilechar);
             return coords;
-
         }
 
         private void decorateRoom(TETile[][] target) {
@@ -121,6 +123,7 @@ public class Array {
             rm.drawRoom(grid);
         }
         generateHallways();
+        roomList.get(0).type = "generic";
         playerCoords = roomList.get(0).addPlayer(grid);
         for (Room r : roomList) {
             r.decorateRoom(grid);
@@ -204,7 +207,7 @@ public class Array {
         } else if (gettingSeed) {
             seed = seed + Character.toString(c);
             return seed;
-        } else if (c == ':') {
+        } else if (c == ':' && !inEnc) {
             awaitingQ = true;
         } else if (c == 'N' || c == 'n') {
             gettingSeed = true;
@@ -223,7 +226,7 @@ public class Array {
 
     private void saveandquit() {
         try {
-            FileWriter f = new FileWriter("save.txt");
+            FileWriter f = new FileWriter("out/production/proj3/save.txt");
             //FileWriter g = new FileWriter("playerTileType.txt");
             //g.write(playertilechar);
             for (int a = 0; a <= HEIGHT; a++) {
@@ -238,17 +241,14 @@ public class Array {
     }
 
     private void load() {
-        In in = new In("save.txt");
+        In in = new In("out/production/proj3/save.txt");
         //In in2 = new In("playerTileType.txt");
         //playertilechar = in2.readChar();
         for (int a = 0; a < HEIGHT; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
                 //if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
-                if (tileLoad.get(row[b]) == tileLoad.get('1')) {
-                    playerCoords[0] = b;
-                    playerCoords[1] = a;
-                } else if (tileLoad.get(row[b]) == tileLoad.get('4')) {
+                if (tileLoad.get(row[b]) == tileLoad.get('4')) {
                     playerCoords[0] = b;
                     playerCoords[1] = a;
                     playertilechar = '4';
@@ -339,6 +339,7 @@ public class Array {
     }
 
     public void encounter() {
+        inEnc = true;
         saveandquit();
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
@@ -350,12 +351,22 @@ public class Array {
             }
         }
         Room r = new Room(20, 10, 5, 5);
-        r.type = "coins";
         r.drawRoom(grid);
-        r.addPlayer(grid);
+        r.type = "coins";
+        r.decorateRoom(grid);
+        playerCoords = r.addPlayer(grid);
+        int sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
+        while (timer > 0) {
+            if (java.time.Clock.systemDefaultZone().millis() / 1000 > sysTicks) {
+                timer--;
+                sysTicks = (int) java.time.Clock.systemDefaultZone().millis() / 1000;
+            }
+        }
         if (coinsCollected == COINNUM) {
-            coinsCollected = 0;
             load();
+            inEnc = false;
+        } else {
+            ready = false;
         }
     }
 
@@ -369,9 +380,12 @@ public class Array {
             StdDraw.text(WIDTH / 2, HEIGHT / 2, seed);
         } else if (changingChar) {
             //StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (FN)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (TN)");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (VN)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Choose an Avatar:");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "Flower (F)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Tree (T)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Water (V)");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Press N to Continue");
+
         } else {
             awaitingQ = true;
             StdDraw.text(WIDTH / 2, HEIGHT / 2 + 10, "Project 3");
@@ -388,7 +402,9 @@ public class Array {
         Font font = new Font("Monaco", Font.BOLD, 15);
         StdDraw.setFont(font);
         TETile tileHolder = grid[(int) x][(int) y];
-        if (tileHolder == Tileset.FLOOR) {
+        if (inEnc) {
+            StdDraw.textLeft(1, HEIGHT - 1, Integer.toString(timer));
+        } else if (tileHolder == Tileset.FLOOR) {
             StdDraw.textLeft(1, HEIGHT - 1, "Floor");
         } else if (tileHolder == Tileset.WALL) {
             StdDraw.textLeft(1, HEIGHT - 1, "Wall");
