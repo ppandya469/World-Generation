@@ -97,11 +97,11 @@ public class Array {
     private void fillArray() {
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
-                if (b == HEIGHT) {
-                    grid[a][b] = Tileset.WALL;
-                } else {
+                //if (b == HEIGHT) {
+                    //grid[a][b] = Tileset.WALL;
+                //} else {
                     grid[a][b] = Tileset.NOTHING;
-                }
+               // }
             }
         }
 
@@ -346,18 +346,30 @@ public class Array {
         StdDraw.setPenColor(Color.WHITE);
         Font font = new Font("Monaco", Font.BOLD, 15);
         StdDraw.setFont(font);
-        TETile tileHolder = grid[(int) x][(int) y];
-        if (tileHolder == Tileset.FLOOR) {
-            StdDraw.textLeft(1, HEIGHT - 1, "Floor");
-        } else if (tileHolder == Tileset.WALL) {
-            StdDraw.textLeft(1, HEIGHT - 1, "Wall");
-        } else if (tileHolder == Tileset.NOTHING) {
-            StdDraw.textLeft(1, HEIGHT - 1, "Nothing");
-        } else if (tileHolder == Tileset.RUG) {
-            StdDraw.textLeft(1, HEIGHT - 1, "Encounter");
+        if (x < WIDTH && y < HEIGHT) {
+            TETile tileHolder = grid[(int) x][(int) y];
+            if (tileHolder == Tileset.FLOOR) {
+                StdDraw.textLeft(1, HEIGHT + 4, "Floor");
+            } else if (tileHolder == Tileset.WALL) {
+                StdDraw.textLeft(1, HEIGHT + 4, "Wall");
+            } else if (tileHolder == Tileset.NOTHING) {
+                StdDraw.textLeft(1, HEIGHT + 4, "Nothing");
+            } else if (tileHolder == Tileset.RUG) {
+                StdDraw.textLeft(1, HEIGHT + 4, "Encounter");
+            } else {
+                StdDraw.textLeft(1, HEIGHT + 4, "Player");
+            }
         } else {
-            StdDraw.textLeft(1, HEIGHT - 1, "Player");
+            StdDraw.textLeft(1, HEIGHT + 4, "Nothing");
         }
+        StdDraw.show();
+    }
+
+    public void HUGNothing () {
+        StdDraw.setPenColor(Color.WHITE);
+        Font font = new Font("Monaco", Font.BOLD, 15);
+        StdDraw.setFont(font);
+        StdDraw.textLeft(1, HEIGHT + 4, "Nothing");
         StdDraw.show();
     }
 
