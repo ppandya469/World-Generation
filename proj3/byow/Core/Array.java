@@ -105,7 +105,7 @@ public class Array {
             }
         }
 
-        int rooms = r.nextInt(ROOMSMIN, ROOMSMAX); //come back to understand randomness
+        int rooms = r.nextInt(ROOMSMIN, ROOMSMAX);
         roomList = new ArrayList<>();
         for (int i = 0; i < rooms; i++) {
             Room rm = generateRoom();
@@ -140,7 +140,7 @@ public class Array {
         Room hv = hVertic(r2, hh.y);
         hh.drawRoom(grid);
         hv.drawRoom(grid);
-        return "horizontal " + Integer.toString(hh.x) + " vertical " + Integer.toString(hv.y); //why are we returning a string
+        return "horizontal " + Integer.toString(hh.x) + " vertical " + Integer.toString(hv.y);
     }
 
     private Room hHoriz(Room origin, int x) {
@@ -335,6 +335,23 @@ public class Array {
             StdDraw.text(WIDTH / 2, HEIGHT / 2, "Load Game (L)");
             StdDraw.text(WIDTH / 2, HEIGHT / 2 - 5, "Quit (:Q)");
             StdDraw.text(WIDTH / 2, HEIGHT / 2 - 10, "Change Avatar (C)");
+        }
+        StdDraw.show();
+    }
+
+    public void HUD (double x, double y) {
+        StdDraw.setPenColor(Color.WHITE);
+        Font font = new Font("Monaco", Font.BOLD, 15);
+        StdDraw.setFont(font);
+        TETile tileHolder = grid[(int) x][(int) y];
+        if (tileHolder == Tileset.FLOOR) {
+            StdDraw.textLeft(1, HEIGHT - 1, "Floor");
+        } else if (tileHolder == Tileset.WALL) {
+            StdDraw.textLeft(1, HEIGHT - 1, "Wall");
+        } else if (tileHolder == Tileset.NOTHING) {
+            StdDraw.textLeft(1, HEIGHT - 1, "Nothing");
+        } else {
+            StdDraw.textLeft(1, HEIGHT - 1, "Player");
         }
         StdDraw.show();
     }
