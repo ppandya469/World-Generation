@@ -233,7 +233,7 @@ public class Array {
         In in = new In("save.txt");
         //In in2 = new In("playerTileType.txt");
         //playertilechar = in2.readChar();
-        for (int a = 0; a < HEIGHT; a++) {
+        for (int a = 0; a < HEIGHT - 5; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
                 //if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
@@ -257,7 +257,7 @@ public class Array {
             }
         }
         for (int c = 0; c < WIDTH; c++) {
-            grid[c][HEIGHT] = Tileset.WALL;
+            grid[c][HEIGHT - 5] = Tileset.WALL;
         }
     }
 
