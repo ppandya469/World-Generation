@@ -228,6 +228,8 @@ public class Array {
     private void saveandquit() {
         try {
             FileWriter f = new FileWriter("save.txt");
+            //FileWriter g = new FileWriter("playerTileType.txt");
+            //g.write(playertilechar);
             for (int a = 0; a <= HEIGHT; a++) {
                 for (int b = 0; b < WIDTH; b++) {
                     f.write(tiles.get(grid[b][a]));
@@ -241,13 +243,27 @@ public class Array {
 
     private void load() {
         In in = new In("save.txt");
-
+        //In in2 = new In("playerTileType.txt");
+        //playertilechar = in2.readChar();
         for (int a = 0; a < HEIGHT; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
-                if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
+                //if (tileLoad.get(row[b]).equals(tileLoad.get(playertilechar))) {
+                if (tileLoad.get(row[b]) == tileLoad.get('1')) {
                     playerCoords[0] = b;
                     playerCoords[1] = a;
+                } else if (tileLoad.get(row[b]) == tileLoad.get('4')) {
+                    playerCoords[0] = b;
+                    playerCoords[1] = a;
+                    playertilechar = '4';
+                } else if (tileLoad.get(row[b]) == tileLoad.get('5')) {
+                    playerCoords[0] = b;
+                    playerCoords[1] = a;
+                    playertilechar = '5';
+                } else if (tileLoad.get(row[b]) == tileLoad.get('6')) {
+                    playerCoords[0] = b;
+                    playerCoords[1] = a;
+                    playertilechar = '6';
                 }
                 grid[b][a] = tileLoad.get(row[b]);
             }
