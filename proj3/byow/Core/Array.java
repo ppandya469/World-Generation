@@ -22,6 +22,8 @@ public class Array {
     private int MAXROOM = 12;
     private int ROOMSMIN = 6;
     private int ROOMSMAX = 10;
+    private int COINNUM = 5;
+    private int coinsCollected = 0;
     private static final int HALLSIZE = 2;
     private char playertilechar = '1';
     public TETile[][] grid;
@@ -82,6 +84,12 @@ public class Array {
                 int encX = r.nextInt(x + 1, x + w);
                 int encY = r.nextInt(y + 1, y + h);
                 target[encX][encY] = Tileset.RUG;
+            } else if (type.equals("coins")) {
+                for (int i = 0; i < COINNUM; i++) {
+                    int encX = r.nextInt(x + 1, x + w);
+                    int encY = r.nextInt(y + 1, y + h);
+                    target[encX][encY] = Tileset.AVATAR;
+                }
             }
         }
 
@@ -272,6 +280,11 @@ public class Array {
                 playerCoords[1]++;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
                 encounter();
+            } else if (grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.AVATAR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                coinsCollected++;
             }
         } else if (c == 'a') {
             if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.FLOOR)) {
@@ -283,6 +296,11 @@ public class Array {
                 playerCoords[0]--;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
                 encounter();
+            } else if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.AVATAR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                coinsCollected++;
             }
         } else if (c == 's') {
             if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.FLOOR)) {
@@ -294,6 +312,11 @@ public class Array {
                 playerCoords[1]--;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
                 encounter();
+            } else if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.AVATAR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[1]--;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                coinsCollected++;
             }
         } else if (c == 'd'){
             if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.FLOOR)) {
@@ -305,14 +328,35 @@ public class Array {
                 playerCoords[0]++;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
                 encounter();
+            } else if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.AVATAR)) {
+                grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
+                playerCoords[0]++;
+                grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
+                coinsCollected++;
             }
         }
         playerMoves.add(c);
     }
 
     public void encounter() {
-
-        fillArray();
+        saveandquit();
+        for (int a = 0; a < WIDTH; a++) {
+            for (int b = 0; b <= HEIGHT; b++) {
+                if (b == HEIGHT) {
+                    grid[a][b] = Tileset.WALL;
+                } else {
+                    grid[a][b] = Tileset.NOTHING;
+                }
+            }
+        }
+        Room r = new Room(20, 10, 5, 5);
+        r.type = "coins";
+        r.drawRoom(grid);
+        r.addPlayer(grid);
+        if (coinsCollected == COINNUM) {
+            coinsCollected = 0;
+            load();
+        }
     }
 
     public void mainMenu() {
