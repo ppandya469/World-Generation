@@ -36,6 +36,7 @@ public class Array {
     private boolean changingChar;
     public boolean ready = false;
     public boolean inEnc = false;
+    private boolean loading = false;
     private String seed = "";
     private int[] playerCoords;
     private String ioString = "";
@@ -183,7 +184,9 @@ public class Array {
     }
 
     public String handleCommand(char c) {
-        ioString += Character.toString(c);
+        if (!loading) {
+            ioString += Character.toString(c);
+        }
         if ((c == 'q' || c == 'Q') && awaitingQ) {
             saveandquit();
             return "quit";
@@ -234,11 +237,8 @@ public class Array {
                 }
                 f.write(System.getProperty("line.separator"));
             }*/
-            char[] chars = ioString.toCharArray();
-            for (int i = 0; i < chars.length; i++) {
-                System.out.print(chars[i]);
-                f.write(Character.toString(chars[i]));
-            }
+            f.write(ioString);
+            f.write(System.lineSeparator());
             f.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -246,11 +246,14 @@ public class Array {
     }
 
     private void load() {
+        loading = true;
         In in = new In("out/production/proj3/save.txt");
-        char[] row = in.readString().toCharArray();
+        ioString = in.readString();
+        char[] row = ioString.toCharArray();
         for (int i = 0; i < row.length; i++) {
             handleCommand(row[i]);
         }
+        loading = false;
         /*for (int a = 0; a < HEIGHT - 5; a++) {
             char[] row = in.readString().toCharArray();
             for (int b = 0; b < WIDTH; b++) {
