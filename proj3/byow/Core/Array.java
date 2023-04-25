@@ -27,6 +27,7 @@ public class Array {
     private int ROOMSMAX = 10;
     private int COINNUM = 5;
     public long timer = 10;
+    public long sysTicks = 0;
     private int coinsCollected = 0;
     private static final int HALLSIZE = 2;
     private char playertilechar = '6';
@@ -350,7 +351,9 @@ public class Array {
 
     public void encounter() {
         inEnc = true;
+        ioString = ioString.substring(0, ioString.length() - 1);
         saveandquit();
+        sysTicks = System.currentTimeMillis();
 
         StdDraw.clear(Color.BLACK);
         StdDraw.setPenColor(Color.WHITE);
