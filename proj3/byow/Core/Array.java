@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 //import java.util.Scanner;
@@ -41,6 +42,7 @@ public class Array {
     private String seed = "";
     private int[] playerCoords;
     private String ioString = "";
+    private HashSet<Character> playerMovesTracker = new HashSet<>();
     private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3', Tileset.FLOWER, '4', Tileset.TREE, '5', Tileset.WATER, '6', Tileset.RUG, '7');
     private Map<Character, TETile> tileLoad = Map.of('0', Tileset.NOTHING, '1', Tileset.AVATAR, '2', Tileset.FLOOR, '3', Tileset.WALL, '4', Tileset.FLOWER, '5', Tileset.TREE, '6', Tileset.WATER, '7', Tileset.RUG);
     private class Room {
@@ -343,6 +345,7 @@ public class Array {
                 coinsCollected++;
             }
         }
+
     }
 
     public void encounter() {
