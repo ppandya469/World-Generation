@@ -172,9 +172,9 @@ public class Array {
         }
 
         if (x > origin.x) {
-            return new Room(x - origin.x - origin.w, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
+            return new Room(x - origin.x - origin.w + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
-        return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
+        return new Room(origin.x - x + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
     }
 
     private Room hVertic(Room origin, int y) {
@@ -231,8 +231,6 @@ public class Array {
             playertilechar = '5';
         } else if (c == 'v' || c == 'V') {
             playertilechar = '6';
-        } else if (c == 'e') {
-            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
         }
         playerMove(c);
         return "done";
@@ -369,7 +367,6 @@ public class Array {
 
     public void encounter() {
         inEnc = true;
-        ioString += 'e';
         saveandquit();
         sysTicks = System.currentTimeMillis();
 
@@ -407,13 +404,7 @@ public class Array {
             timer = 10;
         } else {
             ready = false;
-            StdDraw.clear(Color.BLACK);
-            StdDraw.setPenColor(Color.WHITE);
-            Font font = new Font("Monaco", Font.BOLD, 20);
-            StdDraw.setFont(font);
-            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "You lose!");
-            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Try again? (N)");
-            StdDraw.show();
+            mainMenu();
         }
     }
 
