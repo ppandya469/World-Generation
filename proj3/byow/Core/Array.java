@@ -29,6 +29,8 @@ public class Array {
     public long timer = 10;
     public long sysTicks = 0;
     private int coinsCollected = 0;
+    private int encounters = 0;
+    private int completedEncounters = 0;
     private static final int HALLSIZE = 2;
     private char playertilechar = '6';
     public TETile[][] grid;
@@ -89,6 +91,7 @@ public class Array {
 
         private void decorateRoom(TETile[][] target) {
             if (type.equals("encounter")) {
+                encounters++;
                 int encX = r.nextInt(x + 1, x + w);
                 int encY = r.nextInt(y + 1, y + h);
                 target[encX][encY] = Tileset.RUG;
@@ -366,6 +369,7 @@ public class Array {
     }
 
     public void encounter() {
+        System.out.println(completedEncounters);
         inEnc = true;
         saveandquit();
         sysTicks = System.currentTimeMillis();
@@ -387,11 +391,16 @@ public class Array {
             }
         }
 
-        Room r = new Room(20, 10, 30, 20);
-        r.drawRoom(grid);
-        r.type = "coins";
-        r.decorateRoom(grid);
-        playerCoords = r.addPlayer(grid);
+        Room a = new Room(20, 10, 30, 20);
+        for (int i = 0; i < completedEncounters; i++) {
+            r.nextInt();
+            r.nextInt();
+            r.nextInt();
+        }
+        a.drawRoom(grid);
+        a.type = "coins";
+        a.decorateRoom(grid);
+        playerCoords = a.addPlayer(grid);
 
         //HUD(StdDraw.mouseX(), StdDraw.mouseY());
     }
@@ -402,6 +411,7 @@ public class Array {
             inEnc = false;
             coinsCollected = 0;
             timer = 10;
+            completedEncounters++;
 
             StdDraw.clear(Color.BLACK);
             StdDraw.setPenColor(Color.WHITE);
@@ -409,6 +419,14 @@ public class Array {
             StdDraw.setFont(font);
             StdDraw.text(WIDTH / 2, HEIGHT / 2, "Congratulations!");
             StdDraw.show(1000);
+            if (completedEncounters == encounters) {
+                StdDraw.clear(Color.BLACK);
+                StdDraw.setPenColor(Color.WHITE);
+                StdDraw.setFont(font);
+                StdDraw.text(WIDTH / 2, HEIGHT / 2, "You completed all the encounters!");
+                StdDraw.show(1000);
+                System.exit(0);
+            }
         } else {
             StdDraw.clear(Color.BLACK);
             StdDraw.setPenColor(Color.WHITE);
