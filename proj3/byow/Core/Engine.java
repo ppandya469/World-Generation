@@ -40,7 +40,6 @@ public class Engine {
                 a.HUD(StdDraw.mouseX(), StdDraw.mouseY());
                 if (a.inEnc) {
                     if (System.currentTimeMillis() - a.sysTicks > 1000) {
-                        System.out.println(a.timer);
                         a.timer--;
 
                         a.sysTicks = System.currentTimeMillis();

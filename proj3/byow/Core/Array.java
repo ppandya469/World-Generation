@@ -42,6 +42,7 @@ public class Array {
     private boolean loading = false;
     private String seed = "";
     private int[] playerCoords;
+    private ArrayList<int[]> encCoordList = new ArrayList<>();
     private String ioString = "";
     private HashSet<Character> playerMovesTracker = new HashSet<>();
     private Map<TETile, Character> tiles = Map.of(Tileset.NOTHING, '0', Tileset.AVATAR, '1', Tileset.FLOOR, '2', Tileset.WALL, '3', Tileset.FLOWER, '4', Tileset.TREE, '5', Tileset.WATER, '6', Tileset.RUG, '7');
@@ -132,6 +133,9 @@ public class Array {
         playerCoords = roomList.get(0).addPlayer(grid);
         for (Room r : roomList) {
             r.decorateRoom(grid);
+        }
+        for (int[] i : encCoordList) {
+            grid[i[0]][i[1]] = Tileset.FLOOR;
         }
     }
 
@@ -227,6 +231,8 @@ public class Array {
             playertilechar = '5';
         } else if (c == 'v' || c == 'V') {
             playertilechar = '6';
+        } else if (c == 'e') {
+            grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
         }
         playerMove(c);
         return "done";
@@ -290,7 +296,10 @@ public class Array {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[1]++;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-                encounter();
+                encCoordList.add(playerCoords);
+                if (!loading) {
+                    encounter();
+                }
             } else if (grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[1]++;
@@ -306,7 +315,10 @@ public class Array {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[0]--;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-                encounter();
+                encCoordList.add(playerCoords);
+                if (!loading) {
+                    encounter();
+                }
             } else if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[0]--;
@@ -322,7 +334,10 @@ public class Array {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[1]--;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-                encounter();
+                encCoordList.add(playerCoords);
+                if (!loading) {
+                    encounter();
+                }
             } else if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[1]--;
@@ -338,7 +353,10 @@ public class Array {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[0]++;
                 grid[playerCoords[0]][playerCoords[1]] = tileLoad.get(playertilechar);
-                encounter();
+                encCoordList.add(playerCoords);
+                if (!loading) {
+                    encounter();
+                }
             } else if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
                 playerCoords[0]++;
@@ -351,7 +369,7 @@ public class Array {
 
     public void encounter() {
         inEnc = true;
-        ioString = ioString.substring(0, ioString.length() - 1);
+        ioString += 'e';
         saveandquit();
         sysTicks = System.currentTimeMillis();
 
@@ -360,7 +378,7 @@ public class Array {
         Font font = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(font);
         StdDraw.text(WIDTH / 2, HEIGHT / 2, "You have 10 seconds to collect the coins.");
-        //StdDraw.show(1);
+        StdDraw.show(1);
 
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
@@ -389,6 +407,13 @@ public class Array {
             timer = 10;
         } else {
             ready = false;
+            StdDraw.clear(Color.BLACK);
+            StdDraw.setPenColor(Color.WHITE);
+            Font font = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(font);
+            StdDraw.text(WIDTH / 2, HEIGHT / 2 + 5, "You lose!");
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Try again? (N)");
+            StdDraw.show();
         }
     }
 
