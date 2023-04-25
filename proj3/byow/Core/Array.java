@@ -174,7 +174,7 @@ public class Array {
         if (x > origin.x) {
             return new Room(x - origin.x - origin.w + HALLSIZE, HALLSIZE, origin.x + origin.w - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
         }
-        return new Room(origin.x - x + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
+        return new Room(origin.x - x + HALLSIZE + HALLSIZE, HALLSIZE, x - HALLSIZE, r.nextInt(origin.y, origin.y + origin.h - HALLSIZE));
     }
 
     private Room hVertic(Room origin, int y) {
@@ -375,7 +375,7 @@ public class Array {
         Font font = new Font("Monaco", Font.BOLD, 20);
         StdDraw.setFont(font);
         StdDraw.text(WIDTH / 2, HEIGHT / 2, "You have 10 seconds to collect the coins.");
-        StdDraw.show(1);
+        StdDraw.show(1000);
 
         for (int a = 0; a < WIDTH; a++) {
             for (int b = 0; b <= HEIGHT; b++) {
@@ -402,9 +402,21 @@ public class Array {
             inEnc = false;
             coinsCollected = 0;
             timer = 10;
+
+            StdDraw.clear(Color.BLACK);
+            StdDraw.setPenColor(Color.WHITE);
+            Font font = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(font);
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "Congratulations!");
+            StdDraw.show(1000);
         } else {
-            ready = false;
-            mainMenu();
+            StdDraw.clear(Color.BLACK);
+            StdDraw.setPenColor(Color.WHITE);
+            Font font = new Font("Monaco", Font.BOLD, 20);
+            StdDraw.setFont(font);
+            StdDraw.text(WIDTH / 2, HEIGHT / 2, "You lose!");
+            StdDraw.show(1000);
+            System.exit(0);
         }
     }
 
