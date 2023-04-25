@@ -91,7 +91,6 @@ public class Array {
 
         private void decorateRoom(TETile[][] target) {
             if (type.equals("encounter")) {
-                encounters++;
                 int encX = r.nextInt(x + 1, x + w);
                 int encY = r.nextInt(y + 1, y + h);
                 target[encX][encY] = Tileset.RUG;
@@ -300,6 +299,8 @@ public class Array {
                 encCoordList.add(playerCoords);
                 if (!loading) {
                     encounter();
+                } else {
+                    completedEncounters++;
                 }
             } else if (grid[playerCoords[0]][playerCoords[1] + 1].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
@@ -319,6 +320,8 @@ public class Array {
                 encCoordList.add(playerCoords);
                 if (!loading) {
                     encounter();
+                } else {
+                    completedEncounters++;
                 }
             } else if (grid[playerCoords[0] - 1][playerCoords[1]].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
@@ -338,6 +341,8 @@ public class Array {
                 encCoordList.add(playerCoords);
                 if (!loading) {
                     encounter();
+                } else {
+                    completedEncounters++;
                 }
             } else if (grid[playerCoords[0]][playerCoords[1] - 1].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
@@ -357,6 +362,8 @@ public class Array {
                 encCoordList.add(playerCoords);
                 if (!loading) {
                     encounter();
+                } else {
+                    completedEncounters++;
                 }
             } else if (grid[playerCoords[0] + 1][playerCoords[1]].equals(Tileset.AVATAR)) {
                 grid[playerCoords[0]][playerCoords[1]] = Tileset.FLOOR;
@@ -369,7 +376,6 @@ public class Array {
     }
 
     public void encounter() {
-        System.out.println(completedEncounters);
         inEnc = true;
         saveandquit();
         sysTicks = System.currentTimeMillis();
