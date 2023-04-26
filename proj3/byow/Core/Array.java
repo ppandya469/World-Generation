@@ -226,11 +226,17 @@ public class Array {
         } else if (c == 'l' || c == 'L') {
             load();
         } else if (c == 'f' || c == 'F') {
-            playertilechar = '4';
+            if (!ready) {
+                playertilechar = '4';
+            }
         } else if (c == 't' || c == 'T') {
-            playertilechar = '5';
+            if (!ready) {
+                playertilechar = '5';
+            }
         } else if (c == 'v' || c == 'V') {
-            playertilechar = '6';
+            if (!ready) {
+                playertilechar = '6';
+            }
         }
         playerMove(c);
         return "done";
@@ -410,6 +416,8 @@ public class Array {
     }
 
     public void encWinLose() {
+        System.out.println(coinsCollected);
+        System.out.println(COINNUM);
         if (coinsCollected == COINNUM) {
             load();
             inEnc = false;
