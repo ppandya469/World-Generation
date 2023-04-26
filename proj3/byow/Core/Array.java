@@ -29,7 +29,7 @@ public class Array {
     public long timer = 10;
     public long sysTicks = 0;
     private int coinsCollected = 0;
-    private int encounters = 0;
+    private int encounters = 3;
     private int completedEncounters = 0;
     private static final int HALLSIZE = 2;
     private char playertilechar = '6';
@@ -74,10 +74,6 @@ public class Array {
                 }
             }
             int choice = r.nextInt(3);
-            type = switch (choice) {
-                case 0, 1 -> "encounter";
-                default -> "generic";
-            };
         }
 
         private int[] addPlayer(TETile[][] target) { //don't understand
@@ -131,8 +127,10 @@ public class Array {
             rm.drawRoom(grid);
         }
         generateHallways();
-        roomList.get(0).type = "generic";
-        playerCoords = roomList.get(0).addPlayer(grid);
+        for (int i = 0; i < encounters; i++) {
+            roomList.get(i).type = "encounter";
+        }
+        playerCoords = roomList.get(encounters).addPlayer(grid);
         for (Room r : roomList) {
             r.decorateRoom(grid);
         }
