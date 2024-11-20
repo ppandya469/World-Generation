@@ -3,9 +3,7 @@
     <img width="1278" alt="Screenshot 2024-05-25 at 3 56 43 PM" src="https://github.com/ppandya469/World-Generation/assets/141596211/f7a40a6c-7010-4033-905a-7530580bc3dd">
 </a>
 
-Implements a 2D array data structure to house a tile-based, interactive world exploration engine.  
-Uses text-based tiles along with pseudo-randomized walls, hallways, and rooms to trap and kill players. Players must enter the trap rooms and collect all visible coins within 10 seconds to win the game.  
-Also includes additional features like character swapping, HUD tile hovering, pause, reload, and quit options available in the main menu and throughout the game.
+Implements a 2D array data structure to house a tile-based, interactive world exploration engine. Uses text-based tiles along with pseudo-randomized walls, hallways, and rooms to trap and kill players. Players must enter the trap rooms and collect all visible coins within 10 seconds to win the game. Also includes additional features like character swapping, HUD tile hovering, pause, reload, and quit options available in the main menu and throughout the game.
 
 ---
 
